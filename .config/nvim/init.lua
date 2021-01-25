@@ -3,8 +3,13 @@ vim.o.clipboard = 'unnamedplus'
 -- If we're using the VSCode Extension
 if vim.g.vscode == 1 then
   -- Make j and k travese folds
-  vim.api.nvim_set_keymap('n', 'j', 'gj', {silent = true})
-  vim.api.nvim_set_keymap('n', 'k', 'gk', {silent = true})
+  -- vim.api.nvim_set_keymap('n', 'j', 'gj', {noremap = true, silent = true})
+  -- vim.api.nvim_set_keymap('n', 'k', 'gk', {noremap = true, silent = true})
+  -- Highlight text on yank and stuff
+  vim.cmd'au TextYankPost * lua vim.highlight.on_yank {on_visual = false}'
+  -- Smartcase search
+  vim.o.ignorecase = true
+  vim.o.smartcase = true
 else
   require'plugins'
   -- <==ALIASES==>
@@ -109,10 +114,12 @@ else
   vim.o.ut = 300
   -- Show diagnostics on mouse hold
   -- Also AUTOWRITE file!!! so I don't break my pinkie spamming :wq everytime I want to see rust-analyzer diagnostics thanks
-  cmd'autocmd TextChanged,TextChangedI <buffer> silent write'
+  vim.o.awa = true
   cmd'autocmd CursorHold * lua vim.lsp.diagnostic.show_line_diagnostics()'
   -- Bind
-  vim.cmd[[set completeopt=menuone,noinsert,noselect]]
+  cmd'set completeopt=menuone,noinsert,noselect'
+  cmd'autocmd TextChanged,TextChangedI <buffer>,html silent write'
+  -- cmd'autocmd TextChanged,TextChangedI  silent write'
   --vim.cmd[[set shortmess+=c]]
 
   -- <==LANGUAGE SERVER PROTOCOL CONFIGURATION==>
