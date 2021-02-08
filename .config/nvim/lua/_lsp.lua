@@ -25,39 +25,72 @@ vim.cmd'set completeopt=menuone,noinsert,noselect'
 -- I guess we initiate all lsp, pass that into functions, and go from there
 
 local lspconfig = require 'lspconfig'
-local configs = require 'lspconfig/configs'
--- local util = require 'lspconfig/util'
 local completion = require 'completion'
--- local lsp = vim.lsp
 
 -- ## LSPSTATUS
+
 local lsp_status = require'lsp-status'
 lsp_status.register_progress()
 lsp_status.config{
   indicator_hint = '!',
-  status_symbol = 'vim'
+  status_symbol = 'nvim',
+  indicator_errors = 'E',
+  indicator_warnings = 'W',
+  indicator_info = 'i',
+  indicator_ok = 'Ok',
 }
 
+lspconfig.util.default_config = vim.tbl_extend(
+"force",
+lspconfig.util.default_config,
+{on_attach = function ()
+  completion.on_attach()
+end;
+capabilities = lsp_status.capabilities}
 
-local langs = {'sumneko_lua', 'tsserver', 'rust_analyzer', 'texlab'}
+)
 
-for _, lang in pairs(langs) do
-  configs[lang] = require([[lsp/_]]..lang)
-  lspconfig[lang].setup{
-    on_attach = function ()
-      completion.on_attach()
-      lsp_status.on_attach()
-    end ;
-    capabilities = lsp_status.capabilities
+require'lsp/_lua'
+lspconfig.textlab.setup{}
+lspconfig.tsserver.setup{}
+lspconfig.rust_analyzer.setup{
+  cargo = {
+    allFeatures =  true
   }
-end
+}
 
-function LspStatus() 
+local function LspStatus()
   if #vim.lsp.buf_get_clients() > 0 then
     return lsp_status.status()
   end
   return ''
 end
+
+-- ## Status line config
+local lualine = require('lualine')
+lualine.theme = 'gruvbox_material'
+lualine.separator = '|'
+lualine.sections = {
+  lualine_a = { 'mode' },
+  lualine_b = { 'branch' },
+  lualine_c = { 'filename', LspStatus },
+  lualine_x = { 'encoding', 'fileformat', 'filetype' },
+  lualine_y = { 'progress' },
+  lualine_z = { 'location'  },
+  lualine_diagnostics = {  }
+}
+
+lualine.inactive_sections = {
+  lualine_a = {  },
+  lualine_b = {  },
+  lualine_c = { 'filename' },
+  lualine_x = { 'location' },
+  lualine_y = {  },
+  lualine_z = {   }
+}
+lualine.extensions = { 'fzf' }
+lualine.status()
+
 
 -- ## KEYBINDS
 -- c-] to view definition
