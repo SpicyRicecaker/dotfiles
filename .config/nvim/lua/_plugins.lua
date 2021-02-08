@@ -1,3 +1,6 @@
+-- # PLUGINS
+-- Plugin management using `packer.nvim`
+-- *TODO* how do we get rid of all the linting errors bruh
 vim.cmd [[packadd packer.nvim]]
 
 return require('packer').startup(function()
