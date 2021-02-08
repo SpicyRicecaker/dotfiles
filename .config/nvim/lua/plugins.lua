@@ -2,7 +2,7 @@ vim.cmd [[packadd packer.nvim]]
 
 return require('packer').startup(function()
   use {'wbthomason/packer.nvim', opt = true}
-  use 'joshdick/onedark.vim'
+  use 'sainnhe/gruvbox-material'
   use {
     'hoob3rt/lualine.nvim',
     requires = {'kyazdani42/nvim-web-devicons', opt = true}

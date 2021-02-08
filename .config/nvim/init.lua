@@ -12,12 +12,12 @@ if vim.g.vscode == 1 then
   vim.o.smartcase = true
 else
   require'plugins'
-  -- <==ALIASES==>
+  -- ## ALIASES
   --
   local cmd = vim.cmd
   -- local fn = vim.fn
   local g = vim.g
--- <==UTIL==>
+-- ## UTIL
   --
   -- Need to use this workaround to set options until simpler option interface is made in master
   -- You need to set the global variable, as well as either window or buffer variable to make sure everything works
@@ -31,25 +31,22 @@ else
     end
   end
 
-  -- <==PLUGINS==>
+  -- ## PLUGINS
   --
   -- Call vim plug to init extensions
-  -- TODO figure out some better way to put vim-plug in init.lua
 
-  -- <==COLOR SCHEME==> && <==Onedark Config==>
+  -- ## Color Scheme
   --
   -- If we're in a terminal then we gotta limit out colors to 256 bit
   if vim.fn.has('termguicolors') == 1 then
     vim.o.termguicolors = true
   end
-  -- Hide squiggly lines at the end of file
-  g.onedark_hide_endofbuffer = 1
-  -- Enable italic font
-  g.onedark_terminal_italics = 1
   -- Enable syntax highlighting in nvim
   cmd'syntax on'
-  -- Set colorscheme to onedark
-  cmd'autocmd vimenter * ++nested colorscheme onedark'
+  -- Set colorscheme to gruvbox
+  vim.o.background = 'dark'
+  vim.g.gruvbox_material_background = 'soft'
+  vim.cmd'colorscheme gruvbox-material'
   -- Syntax highlighting of embedded code
   g.vimsyn_embed = 'l'
 
@@ -98,8 +95,8 @@ else
   -- Using join space J inserts no double spaces after a dot
   vim.o.joinspaces = false
   -- Make it so we can easily traverse word wrappings
-  vim.api.nvim_set_keymap('n', 'j', 'gj', { noremap = true, silent = true })
-  vim.api.nvim_set_keymap('n', 'k', 'gk', { noremap = true, silent = true })
+  -- vim.api.nvim_set_keymap('n', 'j', 'gj', { noremap = true, silent = true })
+  -- vim.api.nvim_set_keymap('n', 'k', 'gk', { noremap = true, silent = true })
   -- JK for escape
   vim.api.nvim_set_keymap('i', 'jk', '<Esc>', {})
   -- Neovim nightly feature to briefly show highlight on yank
@@ -118,7 +115,7 @@ else
   cmd'autocmd CursorHold * lua vim.lsp.diagnostic.show_line_diagnostics()'
   -- Bind
   cmd'set completeopt=menuone,noinsert,noselect'
-  cmd'autocmd TextChanged,TextChangedI <buffer>,html silent write'
+  -- cmd'autocmd TextChanged,TextChangedI <buffer>,html silent write'
   -- cmd'autocmd TextChanged,TextChangedI  silent write'
   --vim.cmd[[set shortmess+=c]]
 
@@ -508,7 +505,8 @@ else
       }
       -- Set the status bar to Onedark
       local lualine = require('lualine')
-      lualine.theme = 'onedark'
+      lualine.theme = 'gruvbox_material'
+      lualine.separator = '|'
       lualine.sections = {
         lualine_a = { 'mode' },
         lualine_b = { 'branch' },
@@ -527,5 +525,6 @@ else
         lualine_y = {  },
         lualine_z = {   }
       }
+      lualine.extensions = { 'fzf' }
       lualine.status()
     end
