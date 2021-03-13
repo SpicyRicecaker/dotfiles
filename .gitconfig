@@ -5,3 +5,11 @@
 	email = awesomenessisgolden@gmail.com
 [credential "https://github.com"]
 	helper = !gh auth git-credential
+[merge]
+	tool = vscode
+[mergetool "vscode"]
+	cmd = code --wait $MERGED
+[diff]
+	tool = vscode
+[difftool "vscode"]
+	cmd = code --wait --diff $LOCAL $REMOTE

@@ -11,7 +11,7 @@ set -x FZF_CTRL_T_COMMAND $FZF_DEFAULT_COMMAND
 
 # Set pager to neovim
 # set -x PAGER code
-# set -x MANPAGER code
+ set -x MANPAGER 'nvim +Man!'
 
 # Git bare repos to manage dotfiles
 alias dotgit='git --git-dir=$HOME/dotfiles/ --work-tree=$HOME'
