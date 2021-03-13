@@ -62,6 +62,7 @@ nvim_lsp.rust_analyzer.setup{
     allFeatures =  true
   }
 }
+nvim_lsp.svelte.setup{}
 
 local function LspStatus()
   if #vim.lsp.buf_get_clients() > 0 then

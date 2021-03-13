@@ -10,17 +10,25 @@ set -x FZF_DEFAULT_COMMAND 'rg --files --hidden --ignore-case'
 set -x FZF_CTRL_T_COMMAND $FZF_DEFAULT_COMMAND
 
 # Set pager to neovim
-# set -x PAGER code
- set -x MANPAGER 'nvim +Man!'
+set -x MANPAGER 'nvim +Man!'
+set -x PAGER 'nvim +Man!'
+# Set default editor to neovim
+set -x EDITOR nvim
 
 # Git bare repos to manage dotfiles
-alias dotgit='git --git-dir=$HOME/dotfiles/ --work-tree=$HOME'
+alias dotgit='git --git-dir=$HOME/dotfiles.git/ --work-tree=$HOME'
 
 # Deno stuff
 set -x DENO_INSTALL /home/spicy/.deno
 
+# Set GTK scaling to 2
+# set -x GDK_SCALE 2
+
+# Set parallel compilation
+set -x MAKEFLAGS '-j$(nproc)'
+
 # Path
-set PATH $HOME/.opt/texlab-x86_64-linux $DENO_INSTALL/bin $HOME/.opt/dart-sass $HOME/.npm/bin $PATH
+set PATH $HOME/.opt/texlab-x86_64-linux $DENO_INSTALL/bin $HOME/.opt/dart-sass $HOME/.npm/bin $HOME/.cargo/bin $PATH
 
 # Function to swap files
 function swap

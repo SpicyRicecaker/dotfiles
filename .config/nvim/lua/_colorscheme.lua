@@ -23,4 +23,15 @@ require'nvim-treesitter.configs'.setup {
     enable = true,              -- false will disable the whole extension
     -- disable = { "c", "rust" },  -- list of language that will be disabled
   },
+  indent = {
+    enable = true,
+  },
+  incremental_selection = {
+    enable = true,
+  },
 }
+
+-- Folding based off of treesitter
+vim.cmd[[set foldmethod=expr]]
+-- vim.g.foldexpr = nvim_treesiter.foldexpr()
+vim.cmd[[set foldexpr=nvim_treesitter#foldexpr()]]
