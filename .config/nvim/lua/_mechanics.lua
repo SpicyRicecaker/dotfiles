@@ -54,9 +54,11 @@
   -- Make it so we can easily traverse word wrappings
   -- vim.api.nvim_set_keymap('n', 'j', 'gj', { noremap = true, silent = true })
   -- vim.api.nvim_set_keymap('n', 'k', 'gk', { noremap = true, silent = true })
-  -- JK for escape
+  -- JK for escapekk
   vim.api.nvim_set_keymap('i', 'jk', '<Esc>', {})
   -- Neovim nightly feature to briefly show highlight on yank
   vim.cmd 'au TextYankPost * lua vim.highlight.on_yank {on_visual = false}'
   -- *TODO* IDK MARKDOWN PREVIEW NOT WORKING
   -- vim.g.mkdp_auto_start = 0
+  -- Set leader to space
+  vim.g.mapleader = ' ';

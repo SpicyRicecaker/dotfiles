@@ -45,8 +45,8 @@ window:
   # Blank space added around the window in pixels. This padding is scaled
   # by DPI and the specified value is always added at both opposing sides.
   padding:
-   x: 50
-   y: 50
+    x: 50
+    y: 50
 
   # Spread additional padding evenly around the terminal content.
   dynamic_padding: true
@@ -93,13 +93,12 @@ window:
   # and `light`. Set this to `None` to use the default theme variant.
   #gtk_theme_variant: None
 
-#scrolling:
-# Maximum number of lines in the scrollback buffer.
-# Specifying '0' will disable scrolling.
-#history: 10000
-
-# Scrolling distance multiplier.
-#multiplier: 3
+scrolling:
+  # Maximum number of lines in the scrollback buffer.
+  # Specifying '0' will disable scrolling.
+  history: 10000
+  # Scrolling distance multiplier.
+  multiplier: 3
 
 # Font configuration (changes require restart)
 font:
@@ -777,13 +776,13 @@ shell:
 #
 # If the same trigger is assigned to multiple actions, all of them are executed
 # in the order they were defined in.
-#key_bindings:
+key_bindings:
 #- { key: Paste,                                action: Paste          }
 #- { key: Copy,                                 action: Copy           }
 #- { key: L,         mods: Control,             action: ClearLogNotice }
 #- { key: L,         mods: Control, mode: ~Vi,  chars: "\x0c"          }
-#- { key: PageUp,    mods: Shift,   mode: ~Alt, action: ScrollPageUp,  }
-#- { key: PageDown,  mods: Shift,   mode: ~Alt, action: ScrollPageDown }
+- { key: PageUp,    mods: Shift,   mode: ~Alt, action: ScrollPageUp,  }
+- { key: PageDown,  mods: Shift,   mode: ~Alt, action: ScrollPageDown }
 #- { key: Home,      mods: Shift,   mode: ~Alt, action: ScrollToTop,   }
 #- { key: End,       mods: Shift,   mode: ~Alt, action: ScrollToBottom }
 
