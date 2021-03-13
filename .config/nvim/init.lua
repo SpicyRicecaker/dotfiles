@@ -24,6 +24,8 @@ else
     -- Then load lsp
     require'_lsp'
     -- Then load statusline
-    -- require'_statusline'
+    require'_statusline'
+    -- Then load formatter
+    require'_formatter'
   end)()
 end
