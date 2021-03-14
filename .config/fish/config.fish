@@ -36,3 +36,10 @@ function swap
   mv $argv[1] $argv[2]
   mv tmp_file_for_swap $argv[1]
 end
+
+# On login, open the xorg server!
+if status is-login
+    if test -z "$DISPLAY" -a "$XDG_VTNR" = 1
+        exec startx -- -keeptty
+    end
+end
