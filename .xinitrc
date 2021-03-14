@@ -4,5 +4,4 @@
 xrdb -merge ~/.Xresources
 # Set escape as an additional caps
 setxkbmap -option caps:escape
-setxkb
 exec awesome
