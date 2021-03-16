@@ -1,6 +1,5 @@
 -- # Color Scheme
 -- This file sets up color schemes as well as syntax highlighting stuff
--- *TODO* where the fk do we put treesitter
 --
 -- Neovim defaults to 256-bit colors
 -- If the terminal supports it, setting `termguicolors` enables true color, 24-bit 16 million colors
@@ -9,10 +8,29 @@ if vim.fn.has('termguicolors') == 1 then
 end
 -- Enable syntax highlighting in nvim
 vim.cmd'syntax on'
--- Set colorscheme to gruvbox
+
+-- ## Colorscheme
 vim.o.background = 'dark'
+-- Gruvbox-material config options
 vim.g.gruvbox_material_background = 'soft'
 vim.cmd'colorscheme gruvbox-material'
+
+-- Enable italic
+vim.g.gruvbox_material_enable_italic = 1
+-- Disable italic comments
+vim.g.gruvbox_material_disable_italic_comment = 1
+-- Enable bold font for functions
+vim.g.gruvbox_material_enable_bold = 1
+
+-- Set cursor color
+vim.g.gruvbox_material_cursor = 'purple'
+
+-- Enable preload
+vim.g.gruvbox_material_better_performance = 1
+
+-- Set neovide stuff
+vim.cmd[[set guifont=Fira\ Code\ Nerd\ Font:h30]]
+
 -- Syntax highlighting of embedded code
 vim.g.vimsyn_embed = 'l'
 

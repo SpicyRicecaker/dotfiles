@@ -27,6 +27,10 @@ set -x DENO_INSTALL /home/spicy/.deno
 # Set parallel compilation
 set -x MAKEFLAGS '-j$(nproc)'
 
+# Set default platform theme
+set -x QT_QPA_PLATFORMTHEME qt5ct
+set -x QT_XCB_TABLET_LEGACY_COORDINATES ""
+
 # Path
 set PATH $HOME/.opt/texlab-x86_64-linux $DENO_INSTALL/bin $HOME/.opt/dart-sass $HOME/.npm/bin $HOME/.cargo/bin $PATH
 

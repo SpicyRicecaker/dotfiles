@@ -6,7 +6,9 @@ require('formatter').setup({
       function()
         return {
           exe = "prettier",
-          args = {"--stdin-filepath", vim.api.nvim_buf_get_name(0), '--single-quote'},
+          args = {
+            "--stdin-filepath", vim.api.nvim_buf_get_name(0), '--single-quote'
+          },
           stdin = true
         }
       end
@@ -14,28 +16,22 @@ require('formatter').setup({
     rust = {
       -- Rustfmt
       function()
-        return {
-          exe = "rustfmt",
-          args = {"--emit=stdout"},
-          stdin = true
-        }
+        return {exe = "rustfmt", args = {"--emit=stdout"}, stdin = true}
       end
     },
     lua = {
       -- luafmt
       function()
-        return {
-          exe = "luafmt",
-          args = {"--indent-count", 2, "--stdin"},
-          stdin = true
-        }
+        return {exe = "lua-format", args = {"--indent-width", 2}, stdin = true}
       end
     },
     svelte = {
       function()
         return {
           exe = "prettier",
-          args = {"--stdin-filepath", vim.api.nvim_buf_get_name(0), '--single-quote'},
+          args = {
+            "--stdin-filepath", vim.api.nvim_buf_get_name(0), '--single-quote'
+          },
           stdin = true
         }
       end
@@ -43,4 +39,4 @@ require('formatter').setup({
   }
 })
 
-vim.api.nvim_set_keymap('n', 'gf', '<cmd>Format<CR>', { silent = true})
+vim.api.nvim_set_keymap('n', 'gf', '<cmd>Format<CR>', {silent = true})

@@ -6,26 +6,28 @@ if vim.g.vscode == 1 then
   -- vim.api.nvim_set_keymap('n', 'j', 'gj', {noremap = true, silent = true})
   -- vim.api.nvim_set_keymap('n', 'k', 'gk', {noremap = true, silent = true})
   -- Highlight text on yank and stuff
-  vim.cmd'au TextYankPost * lua vim.highlight.on_yank {on_visual = false}'
+  vim.cmd 'au TextYankPost * lua vim.highlight.on_yank {on_visual = false}'
   -- Smartcase search
   vim.o.ignorecase = true
   vim.o.smartcase = true
 else
   -- Call our init function
-  (function ()
+  (function()
     -- First load plugins
-    require'_plugins'
+    require '_plugins'
     -- Then load sane default settings
-    require'_mechanics'
+    require '_mechanics'
     -- Then load colorscheme
-    require'_colorscheme'
+    require '_colorscheme'
     -- Then load telescope (fuzzy find)
-    require'_telescope'
+    require '_telescope'
     -- Then load lsp
-    require'_lsp'
+    require '_lsp'
     -- Then load statusline
-    require'_statusline'
+    require '_statusline'
     -- Then load formatter
-    require'_formatter'
+    require '_formatter'
+    -- Then load tree
+    require '_nvim-tree'
   end)()
 end
