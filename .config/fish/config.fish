@@ -28,7 +28,7 @@ set -x DENO_INSTALL /home/spicy/.deno
 set -x MAKEFLAGS '-j$(nproc)'
 
 # Set default platform theme
-set -x QT_QPA_PLATFORMTHEME qt5ct
+# set -x QT_QPA_PLATFORMTHEME qt5ct
 set -x QT_XCB_TABLET_LEGACY_COORDINATES ""
 
 # Path

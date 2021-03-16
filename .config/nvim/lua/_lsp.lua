@@ -1,8 +1,6 @@
 -- # LSP
 -- Deals with language servers using built-in 0.5.0 lsp
-
 -- ## QOL Changes
-
 -- Allow modified buffers? idk
 -- vim.o.hidden = true
 -- Update time (ms) used for time before cursor hold event is triggered and swap is saved to disk
@@ -14,11 +12,11 @@ vim.o.awa = true
 -- cmd'autocmd TextChanged,TextChangedI <buffer>,html silent write'
 -- cmd'autocmd TextChanged,TextChangedI  silent write'
 -- Make messages smaller
-vim.cmd[[set shortmess+=c]]
+vim.cmd [[set shortmess+=c]]
 -- Show diagnostics on mouse hold
-vim.cmd'autocmd CursorHold * lua vim.lsp.diagnostic.show_line_diagnostics()'
+vim.cmd 'autocmd CursorHold * lua vim.lsp.diagnostic.show_line_diagnostics()'
 -- Completion menu
-vim.cmd'set completeopt=menuone,noinsert,noselect'
+vim.cmd 'set completeopt=menuone,noinsert,noselect'
 
 -- ## Servers
 
@@ -30,44 +28,29 @@ local completion = require 'completion'
 -- ## LSPSTATUS
 -- This needs to be setup first since we want to register the loading process of servers
 
-local lsp_status = require'lsp-status'
+local lsp_status = require 'lsp-status'
 -- Register the progress handler
 lsp_status.register_progress()
 -- Config for symbols
-lsp_status.config{
+lsp_status.config {
   indicator_hint = '!',
   status_symbol = 'nvim',
   indicator_errors = 'E',
   indicator_warnings = 'W',
   indicator_info = 'i',
-  indicator_ok = 'Ok',
+  indicator_ok = 'Ok'
 }
 
 --
-nvim_lsp.util.default_config = vim.tbl_extend(
-"force",
-nvim_lsp.util.default_config,
-{on_attach = function ()
-  completion.on_attach()
-end;
-capabilities = lsp_status.capabilities}
 
-)
-
-require'lsp/_lua'
-nvim_lsp.texlab.setup{}
-nvim_lsp.tsserver.setup{}
-nvim_lsp.rust_analyzer.setup{
-  cargo = {
-    allFeatures =  true
-  }
-}
-nvim_lsp.svelte.setup{}
+--[[ nvim_lsp.util.default_config = vim.tbl_extend("force",
+                                              nvim_lsp.util.default_config, {
+  on_attach = function() completion.on_attach() end,
+  capabilities = lsp_status.capabilities
+}) ]]
 
 local function LspStatus()
-  if #vim.lsp.buf_get_clients() > 0 then
-    return lsp_status.status()
-  end
+  if #vim.lsp.buf_get_clients() > 0 then return lsp_status.status() end
   return ''
 end
 
@@ -76,24 +59,24 @@ local lualine = require('lualine')
 lualine.theme = 'gruvbox_material'
 lualine.separator = '|'
 lualine.sections = {
-  lualine_a = { 'mode' },
-  lualine_b = { 'branch' },
-  lualine_c = { 'filename', LspStatus },
-  lualine_x = { 'encoding', 'fileformat', 'filetype' },
-  lualine_y = { 'progress' },
-  lualine_z = { 'location'  },
-  lualine_diagnostics = {  }
+  lualine_a = {'mode'},
+  lualine_b = {'branch'},
+  lualine_c = {'filename', LspStatus},
+  lualine_x = {'encoding', 'fileformat', 'filetype'},
+  lualine_y = {'progress'},
+  lualine_z = {'location'},
+  lualine_diagnostics = {}
 }
 
 lualine.inactive_sections = {
-  lualine_a = {  },
-  lualine_b = {  },
-  lualine_c = { 'filename' },
-  lualine_x = { 'location' },
-  lualine_y = {  },
-  lualine_z = {   }
+  lualine_a = {},
+  lualine_b = {},
+  lualine_c = {'filename'},
+  lualine_x = {'location'},
+  lualine_y = {},
+  lualine_z = {}
 }
-lualine.extensions = { 'fzf' }
+lualine.extensions = {'fzf'}
 lualine.status()
 
 local on_attach = function(client, bufnr)
@@ -103,31 +86,37 @@ local on_attach = function(client, bufnr)
   buf_set_option('omnifunc', 'v:lua.vim.lsp.omnifunc')
 
   -- Mappings.
-  local opts = { noremap=true, silent=true }
+  local opts = {noremap = true, silent = true}
   buf_set_keymap('n', 'gD', '<Cmd>lua vim.lsp.buf.declaration()<CR>', opts)
   buf_set_keymap('n', 'gd', '<Cmd>lua vim.lsp.buf.definition()<CR>', opts)
   buf_set_keymap('n', 'K', '<Cmd>lua vim.lsp.buf.hover()<CR>', opts)
   buf_set_keymap('n', 'gi', '<cmd>lua vim.lsp.buf.implementation()<CR>', opts)
   buf_set_keymap('n', '<C-k>', '<cmd>lua vim.lsp.buf.signature_help()<CR>', opts)
-  buf_set_keymap('n', '<leader>wa', '<cmd>lua vim.lsp.buf.add_workspace_folder()<CR>', opts)
-  buf_set_keymap('n', '<leader>wr', '<cmd>lua vim.lsp.buf.remove_workspace_folder()<CR>', opts)
-  buf_set_keymap('n', '<leader>wl', '<cmd>lua print(vim.inspect(vim.lsp.buf.list_workspace_folders()))<CR>', opts)
-  buf_set_keymap('n', '<leader>D', '<cmd>lua vim.lsp.buf.type_definition()<CR>', opts)
+  buf_set_keymap('n', '<leader>wa',
+                 '<cmd>lua vim.lsp.buf.add_workspace_folder()<CR>', opts)
+  buf_set_keymap('n', '<leader>wr',
+                 '<cmd>lua vim.lsp.buf.remove_workspace_folder()<CR>', opts)
+  buf_set_keymap('n', '<leader>wl',
+                 '<cmd>lua print(vim.inspect(vim.lsp.buf.list_workspace_folders()))<CR>',
+                 opts)
+  buf_set_keymap('n', '<leader>D', '<cmd>lua vim.lsp.buf.type_definition()<CR>',
+                 opts)
   buf_set_keymap('n', '<leader>rn', '<cmd>lua vim.lsp.buf.rename()<CR>', opts)
-  -- TEST TEST
-  buf_set_keymap('n', '<leader>rn', '<cmd>lua vim.lsp.buf.rename()<CR>')
-  -- TEST
   buf_set_keymap('n', 'gr', '<cmd>lua vim.lsp.buf.references()<CR>', opts)
-  buf_set_keymap('n', '<leader>e', '<cmd>lua vim.lsp.diagnostic.show_line_diagnostics()<CR>', opts)
+  buf_set_keymap('n', '<leader>e',
+                 '<cmd>lua vim.lsp.diagnostic.show_line_diagnostics()<CR>', opts)
   buf_set_keymap('n', '[d', '<cmd>lua vim.lsp.diagnostic.goto_prev()<CR>', opts)
   buf_set_keymap('n', ']d', '<cmd>lua vim.lsp.diagnostic.goto_next()<CR>', opts)
-  buf_set_keymap('n', '<leader>q', '<cmd>lua vim.lsp.diagnostic.set_loclist()<CR>', opts)
+  buf_set_keymap('n', '<leader>q',
+                 '<cmd>lua vim.lsp.diagnostic.set_loclist()<CR>', opts)
 
   -- Set some keybinds conditional on server capabilities
   if client.resolved_capabilities.document_formatting then
-    buf_set_keymap("n", "<space>f", "<cmd>lua vim.lsp.buf.formatting()<CR>", opts)
+    buf_set_keymap("n", "<leader>f", "<cmd>lua vim.lsp.buf.formatting()<CR>",
+                   opts)
   elseif client.resolved_capabilities.document_range_formatting then
-    buf_set_keymap("n", "<space>f", "<cmd>lua vim.lsp.buf.range_formatting()<CR>", opts)
+    buf_set_keymap("n", "<leader>f",
+                   "<cmd>lua vim.lsp.buf.range_formatting()<CR>", opts)
   end
 
   -- Set autocommands conditional on server_capabilities
@@ -147,10 +136,14 @@ end
 
 -- Use a loop to conveniently both setup defined servers
 -- and map buffer local keybindings when the language server attaches
-local servers = { "rust_analyzer", "tsserver" }
-for _, lsp in ipairs(servers) do
-  nvim_lsp[lsp].setup { on_attach = on_attach }
-end
+local servers = {"texlab", "tsserver", "svelte"}
+for _, lsp in ipairs(servers) do nvim_lsp[lsp].setup {on_attach = on_attach} end
+nvim_lsp.rust_analyzer.setup {
+  cargo = {allFeatures = true},
+  on_attach = on_attach
+}
+
+require 'lsp/_lua'
 
 --[[ -- ## KEYBINDS
 -- c-] to view definition
@@ -179,15 +172,17 @@ local function t(str)
   return vim.api.nvim_replace_termcodes(str, true, true, true)
 end
 function _G.smart_tab_n()
-  return vim.fn.pumvisible() == 1 and t'<C-n>' or t'<Tab>'
+  return vim.fn.pumvisible() == 1 and t '<C-n>' or t '<Tab>'
 end
 function _G.smart_tab_p()
-  return vim.fn.pumvisible() == 1 and t'<C-p>' or t'<S-Tab>'
+  return vim.fn.pumvisible() == 1 and t '<C-p>' or t '<S-Tab>'
 end
 
 -- Tab completions?
-vim.api.nvim_set_keymap('i', '<Tab>', 'v:lua.smart_tab_n()', {expr = true, noremap = true})
-vim.api.nvim_set_keymap('i', '<S-Tab>', 'v:lua.smart_tab_p()', {expr = true, noremap = true})
+vim.api.nvim_set_keymap('i', '<Tab>', 'v:lua.smart_tab_n()',
+                        {expr = true, noremap = true})
+vim.api.nvim_set_keymap('i', '<S-Tab>', 'v:lua.smart_tab_p()',
+                        {expr = true, noremap = true})
 
 -- Matching strategy, from exact to substring to fuzzy to all
 vim.g.completion_matching_strategy_list = {'exact', 'substring', 'fuzzy', 'all'}
