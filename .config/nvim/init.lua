@@ -1,7 +1,7 @@
 -- If we're using the VSCode Extension
 if vim.g.vscode == 1 then
   -- Bind vim clipboard to system clipboard
-  -- vim.o.clipboard = 'unnamedplus'
+  vim.o.clipboard = 'unnamedplus'
   -- Make j and k travese folds
   -- vim.api.nvim_set_keymap('n', 'j', 'gj', {noremap = true, silent = true})
   -- vim.api.nvim_set_keymap('n', 'k', 'gk', {noremap = true, silent = true})

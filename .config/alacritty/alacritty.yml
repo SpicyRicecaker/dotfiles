@@ -505,9 +505,15 @@ colors: *gruvbox_material_soft_dark
 shell:
   program: /bin/fish
   args:
-    - -l
+    # This attaches all new instances of alacritty to tmux, but the problem in something like
+    # awesome wm is that multiple terminal instances are insanely bugged
+    # - -l
+    # - -c
+    # - tmux attach || tmux
+    # Instead we'll just start a new tmux instance for each alacritty instance, which will be slower
+    # but makes more sense with a tiling wm
     - -c
-    - tmux attach || tmux
+    - tmux
 
 # Startup directory
 #
