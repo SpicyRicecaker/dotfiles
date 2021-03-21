@@ -241,6 +241,10 @@ root.buttons(gears.table.join(
 
 -- {{{ Key bindings
 globalkeys = gears.table.join(
+  -- Volume up and down woo
+  awful.key({}, "XF86AudioRaiseVolume", function () awful.util.spawn("amixer set Master 5%+") end),
+  awful.key({}, "XF86AudioLowerVolume", function () awful.util.spawn("amixer set Master 5%-") end),
+  awful.key({}, "XF86AudioMute", function () awful.util.spawn("amixer set Master toggle") end),
   awful.key({ modkey,           }, "s",      hotkeys_popup.show_help,
     {description="show help", group="awesome"}),
   awful.key({ modkey,           }, "Left",   awful.tag.viewprev,
@@ -505,9 +509,9 @@ awful.rules.rules = {
   }, properties = { titlebars_enabled = true }
   },
 
-  -- Set Firefox to always map on the tag named "2" on screen 1.
-  -- { rule = { class = "Firefox" },
-  --   properties = { screen = 1, tag = "2" } },
+  -- Set firefox to always start unmaximized
+  { rule = { class = "firefox" },
+    properties = { opacity = 1, maximized = false, floating = false} },
 }
 -- }}}
 
