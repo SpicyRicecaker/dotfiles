@@ -35,8 +35,8 @@ local palette_original = {
 }
 
 local theme = {
-    font = "Fira Code 8",
-    nerd_font = "Fira Code Nerd Font 8",
+    font = "Cascadia Code 8",
+    nerd_font = "Cascadia Code Nerd Font 8",
 
     -- Themes are based off of gruvbox material hard dark and soft dark mixed
 

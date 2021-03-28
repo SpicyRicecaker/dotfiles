@@ -506,11 +506,14 @@ awful.rules.rules = {
 
   -- Add titlebars to normal clients and dialogs
   { rule_any = {type = { "normal", "dialog" }
-  }, properties = { titlebars_enabled = true }
+  }, properties = { titlebars_enabled = false }
   },
 
   -- Set firefox to always start unmaximized
   { rule = { class = "firefox" },
+    properties = { opacity = 1, maximized = false, floating = false} },
+
+  { rule = { class = "firefox-developer-edition" },
     properties = { opacity = 1, maximized = false, floating = false} },
 }
 -- }}}
