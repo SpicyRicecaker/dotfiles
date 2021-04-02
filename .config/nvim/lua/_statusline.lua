@@ -24,4 +24,4 @@ lualine.inactive_sections = {
   lualine_z = {   }
 }
 lualine.extensions = { 'fzf' }
-lualine.status()
+-- lualine.status()
