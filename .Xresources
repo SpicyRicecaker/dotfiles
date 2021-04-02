@@ -1,1 +1,3 @@
+# Double of 86, the normal DPI
+# https://wiki.archlinux.org/index.php/HiDPI#X_Resources
 Xft.dpi: 192
