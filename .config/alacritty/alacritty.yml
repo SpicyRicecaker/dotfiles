@@ -104,50 +104,50 @@ window:
 # Font configuration
 font:
   # Normal (roman) font face
-  #normal:
+  normal:
     # Font family
-    #
+    
     # Default:
-    #   - (macOS) Menlo
-    #   - (Linux/BSD) monospace
-    #   - (Windows) Consolas
-    #family: monospace
+      # - (macOS) Menlo
+      # - (Linux/BSD) monospace
+      # - (Windows) Consolas
+    family: Cascadia Code
 
     # The `style` can be specified to pick a specific face.
-    #style: Regular
+    # style: Regular
 
   # Bold font face
-  #bold:
-    # Font family
-    #
-    # If the bold family is not specified, it will fall back to the
-    # value specified for the normal font.
-    #family: monospace
+  bold:
+  #   Font family
+    
+  #   If the bold family is not specified, it will fall back to the
+  #   value specified for the normal font.
+    family: Cascadia Code
 
-    # The `style` can be specified to pick a specific face.
-    #style: Bold
+  #   The `style` can be specified to pick a specific face.
+    style: Bold
 
   # Italic font face
-  #italic:
-    # Font family
-    #
-    # If the italic family is not specified, it will fall back to the
-    # value specified for the normal font.
-    #family: monospace
+  italic:
+  #   Font family
+    
+  #   If the italic family is not specified, it will fall back to the
+  #   value specified for the normal font.
+    family: Cascadia Code
 
-    # The `style` can be specified to pick a specific face.
-    #style: Italic
+  #   The `style` can be specified to pick a specific face.
+    style: Italic
 
   # Bold italic font face
-  #bold_italic:
-    # Font family
-    #
-    # If the bold italic family is not specified, it will fall back to the
-    # value specified for the normal font.
-    #family: monospace
+  bold_italic:
+  #   Font family
+    
+  #   If the bold italic family is not specified, it will fall back to the
+  #   value specified for the normal font.
+    family: Cascadia Code
 
-    # The `style` can be specified to pick a specific face.
-    #style: Bold Italic
+  #   The `style` can be specified to pick a specific face.
+    style: Bold Italic
 
   # Point size
   size: 14.0
@@ -415,14 +415,16 @@ font:
 # `/bin/fish`. Entries in `shell.args` are passed unmodified as arguments to the
 # shell.
 #
-# Default:
+Default:
 #   - (macOS) /bin/bash --login
 #   - (Linux/BSD) user login shell
 #   - (Windows) powershell
-#shell:
-#  program: /bin/bash
-#  args:
-#    - --login
+shell:
+  program: /bin/bash
+  args: 
+    - -l
+    - -c
+    - tmux
 
 # Startup directory
 #

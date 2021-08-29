@@ -17,7 +17,7 @@ return require('packer').startup(function()
   use {'nvim-treesitter/nvim-treesitter', run = ':TSUpdate'}
   -- use {'glacambre/firenvim', run = ':firenvim#install(0)'}
   -- use {'iamcco/markdown-preview.nvim', run = 'cd app && yarn install'}
-  use {'nvim-telescope/telescope.nvim', requires = {{'nvim-lua/popup.nvim'}, {'nvim-lua/plenary.nvim'}}}
+  use {'nvim-telescope/telescope.nvim', requires = {{'nvim-lua/popup.nvim'}, {'nvim-lua/plenary.nvim'}, {'kyazdani42/nvim-web-devicons'}}}
   use 'b3nj5m1n/kommentary'
   use 'mhartington/formatter.nvim'
   -- File explorer basically

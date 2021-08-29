@@ -62,3 +62,5 @@
   -- vim.g.mkdp_auto_start = 0
   -- Set leader to space
   vim.g.mapleader = ' ';
+
+  vim.cmd[[set nofoldenable]]
