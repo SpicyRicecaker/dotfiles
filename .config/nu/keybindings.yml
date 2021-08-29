@@ -1,0 +1,6 @@
+- key: 
+    Char: F
+  modifiers:
+    CTRL:
+  binding:
+    CompleteHint: 
