@@ -150,7 +150,7 @@ font:
     style: Bold Italic
 
   # Point size
-  size: 14.0
+  size: 10.0
 
   # Offset is the extra space around each character. `offset.y` can be thought
   # of as modifying the line spacing, and `offset.x` as modifying the letter
@@ -173,13 +173,15 @@ font:
   #use_thin_strokes: true
 
 # If `true`, bold text is drawn using the bright color variants.
-draw_bold_text_with_bright_colors: true
+# draw_bold_text_with_bright_colors: true
 
 # Colors (Tomorrow Night)
 colors:
   primary:
-    background: '0x282828'
-    foreground: '0xdfbf8e'
+    background: '0x000000'
+    foreground: '0xffffff'
+    # background: '0x282828'
+    # foreground: '0xdfbf8e'
 
   normal:
     black:   '0x665c54'
@@ -426,7 +428,7 @@ cursor:
   #thickness: 0.15
 
 # Live config reload (changes require restart)
-#live_config_reload: true
+live_config_reload: false
 
 # Shell
 #
@@ -434,7 +436,7 @@ cursor:
 # `/bin/fish`. Entries in `shell.args` are passed unmodified as arguments to the
 # shell.
 #
-Default:
+# Default:
 #   - (macOS) /bin/bash --login
 #   - (Linux/BSD) user login shell
 #   - (Windows) powershell
