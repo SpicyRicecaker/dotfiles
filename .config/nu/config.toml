@@ -1,7 +1,10 @@
-path = "/home/spicy/.local/bin"
+path = ["/home/spicy/.local/bin", "/home/spicy/.volta/bin"]
 prompt = "starship_prompt"
 skip_welcome_message = true
 startup = ["mkdir ~/.cache/starship", "starship init nu | save ~/.cache/starship/init.nu", "source ~/.cache/starship/init.nu", "alias dotgit = git --git-dir=/home/spicy/dotfiles.git --work-tree=/home/spicy", "let git = /home/spicy/git"]
+
+[env]
+VOLTA_HOME = "/home/spicy/.volta"
 
 [line_editor]
 edit_mode = "vi"

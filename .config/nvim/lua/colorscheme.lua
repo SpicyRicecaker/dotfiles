@@ -1,8 +1,21 @@
 local function treesitter()
-    require 'nvim-treesitter.install'.compilers = { "clang" }
+    require'nvim-treesitter.install'.compilers = {"clang"}
     require'nvim-treesitter.configs'.setup {
         ensure_installed = "maintained",
-        highlight = {enable = true, indent = {enable = true}}
+        highlight = {
+            enable = true,
+            indent = {enable = true},
+            additional_vim_regex_highlighting = {"markdown"}
+        },
+        incremental_selection = {
+            enable = true,
+            keymaps = {
+                init_selection = "gnn",
+                node_incremental = "grn",
+                scope_incremental = "grc",
+                node_decremental = "grm"
+            }
+        }
     }
     vim.cmd 'set foldmethod=expr'
     vim.cmd 'set foldexpr=nvim_treesitter#foldexpr()'
@@ -23,7 +36,6 @@ end
 local function load()
     color_scheme();
     treesitter();
-    -- other();
 end
 
 load()
