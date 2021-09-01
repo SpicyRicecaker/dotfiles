@@ -5,6 +5,7 @@ startup = ["mkdir ~/.cache/starship", "starship init nu | save ~/.cache/starship
 
 [env]
 VOLTA_HOME = "/home/spicy/.volta"
+EDITOR = "nvim"
 
 [line_editor]
 edit_mode = "vi"
