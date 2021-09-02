@@ -40,19 +40,19 @@ function _G.smart_show_documentation()
 end
 
 function _G.scroll_floating_f()
-  return vim.call'coc#float#has_scroll' == true and vim.fn['coc#float#scroll'](1) or t'<C-f>'
+  return vim.call'coc#float#has_scroll' == 1 and vim.fn['coc#float#scroll'](1) or t'<C-f>'
 end
 
 function _G.scroll_floating_b()
-  return vim.call'coc#float#has_scroll' == true and vim.fn['coc#float#scroll'](0) or t'<C-b>'
+  return vim.call'coc#float#has_scroll' == 1 and vim.fn['coc#float#scroll'](0) or t'<C-b>'
 end
 
 function _G.scroll_floating_r()
-  return vim.call'coc#float#has_scroll' == true and t'<C-r>' .. '=coc#float#scroll(1)' .. t'<CR>' or t'<Right>'
+  return vim.call'coc#float#has_scroll' == 1 and t'<C-r>' .. '=coc#float#scroll(1)' .. t'<CR>' or t'<Right>'
 end
 
 function _G.scroll_floating_l()
-  return vim.call'coc#float#has_scroll' == true and t'<C-r>' .. '=coc#float#scroll(0)' .. t'<CR>' or t'<Left>'
+  return vim.call'coc#float#has_scroll' == 1 and t'<C-r>' .. '=coc#float#scroll(0)' .. t'<CR>' or t'<Left>'
 end
 
 local function load ()
