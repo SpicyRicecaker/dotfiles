@@ -40,19 +40,19 @@ function _G.smart_show_documentation()
 end
 
 function _G.scroll_floating_f()
-  return vim.call'coc#float#has_scroll' and vim.fn['coc#float#scroll'](1) or t'<C-f>'
+  return vim.call'coc#float#has_scroll' == true and vim.fn['coc#float#scroll'](1) or t'<C-f>'
 end
 
 function _G.scroll_floating_b()
-  return vim.call'coc#float#has_scroll' and vim.fn['coc#float#scroll'](0) or t'<C-b>'
+  return vim.call'coc#float#has_scroll' == true and vim.fn['coc#float#scroll'](0) or t'<C-b>'
 end
 
 function _G.scroll_floating_r()
-  return vim.call'coc#float#has_scroll' and t'<C-r>' .. '=coc#float#scroll(1)' .. t'<CR>' or t'<Right>'
+  return vim.call'coc#float#has_scroll' == true and t'<C-r>' .. '=coc#float#scroll(1)' .. t'<CR>' or t'<Right>'
 end
 
 function _G.scroll_floating_l()
-  return vim.call'coc#float#has_scroll' and t'<C-r>' .. '=coc#float#scroll(0)' .. t'<CR>' or t'<Left>'
+  return vim.call'coc#float#has_scroll' == true and t'<C-r>' .. '=coc#float#scroll(0)' .. t'<CR>' or t'<Left>'
 end
 
 local function load ()
@@ -61,13 +61,13 @@ local function load ()
   }
   vim.o.shortmess = vim.o.shortmess .. 'c'
   local m = vim.api.nvim_set_keymap
- 
-  m('n', '<C-f>', 'v:lua.scroll_floating_f()', {expr = true, silent = true, noremap = true})
-  m('n', '<C-b>', 'v:lua.scroll_floating_b()', {expr = true, silent = true, noremap = true})
-  m('i', '<C-f>', 'v:lua.scroll_floating_r()', {expr = true, silent = true, noremap = true})
-  m('i', '<C-b>', 'v:lua.scroll_floating_l()', {expr = true, silent = true, noremap = true})
-  m('v', '<C-f>', 'v:lua.scroll_floating_f()', {expr = true, silent = true, noremap = true})
-  m('v', '<C-b>', 'v:lua.scroll_floating_b()', {expr = true, silent = true, noremap = true})
+
+  m('n', '<C-f>', 'v:lua.scroll_floating_f()', {expr = true, silent = true, noremap = true, nowait = true})
+  m('n', '<C-b>', 'v:lua.scroll_floating_b()', {expr = true, silent = true, noremap = true, nowait = true})
+  m('i', '<C-f>', 'v:lua.scroll_floating_r()', {expr = true, silent = true, noremap = true, nowait = true})
+  m('i', '<C-b>', 'v:lua.scroll_floating_l()', {expr = true, silent = true, noremap = true, nowait = true})
+  m('v', '<C-f>', 'v:lua.scroll_floating_f()', {expr = true, silent = true, noremap = true, nowait = true})
+  m('v', '<C-b>', 'v:lua.scroll_floating_b()', {expr = true, silent = true, noremap = true, nowait = true})
 
   -- Use K to show documentation in preview window.
   m('n', 'K', '<Cmd>lua smart_show_documentation()<CR>', {silent = true, noremap = true})
