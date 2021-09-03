@@ -19,6 +19,25 @@ return require'packer'.startup(function()
     -- Testing out native lsp rn, thanks to autosave
     -- use {'neoclide/coc.nvim', branch = 'release'}
 
+    -- Debug!
+    use 'mfussenegger/nvim-dap'
+
+    -- Autocomplete!
+    use { 'hrsh7th/nvim-cmp', requires = {
+      -- Source: lsp
+      'hrsh7th/cmp-nvim-lsp',
+      -- Source: buffer
+      'hrsh7th/cmp-buffer',
+      -- Source: system path
+      'hrsh7th/cmp-path',
+      -- Snippet engine
+      'L3MON4D3/LuaSnip',
+      -- Source: snippet engine
+      'saadparwaiz1/cmp_luasnip'
+    }}
+
+
+    -- TODO Maybe add these as deps to nvim-lspconfig so we don't load both at the same time when not using builtin lsp
     -- Rust!
     use {
       'simrat39/rust-tools.nvim',
@@ -30,6 +49,9 @@ return require'packer'.startup(function()
         'mfussenegger/nvim-dap'
       }
     }
+
+    -- Lua
+    use 'folke/lua-dev.nvim'
 
     -- Comments!
     use 'b3nj5m1n/kommentary'

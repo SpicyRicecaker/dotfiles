@@ -4,6 +4,5 @@
   }
   -- Testing out rust-tools and native lsp rn
   -- require'coc'
-
-
+  require 'lsp/builtin'
 end)()

@@ -2,7 +2,7 @@
     require 'plugins'
     require 'colorscheme'
     require 'keyboard'
-    require 'lsp'
+    require 'lsp/lsp'
     require 'statusline'
     require 'autopair'
     require 'nvimtree'
