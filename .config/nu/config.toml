@@ -1,4 +1,4 @@
-path = ["/home/spicy/.local/bin", "/home/spicy/.volta/bin"]
+path = ["/home/spicy/.local/bin", "/home/spicy/.volta/bin", "/home/spicy/bin"]
 prompt = "starship_prompt"
 skip_welcome_message = true
 startup = ["mkdir ~/.cache/starship", "starship init nu | save ~/.cache/starship/init.nu", "source ~/.cache/starship/init.nu", "alias dotgit = git --git-dir=/home/spicy/dotfiles.git --work-tree=/home/spicy", "let git = /home/spicy/git"]
