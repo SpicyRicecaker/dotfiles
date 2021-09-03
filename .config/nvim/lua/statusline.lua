@@ -11,10 +11,12 @@
       highlight = {colors.blue,colors.bg}
     },
   }
+
   gls.left[2] = {
     ViMode = {
       provider = function()
         -- auto change color according the vim mode
+        -- for some reason only works with gui
         local mode_color = {n = colors.red, i = colors.green,v=colors.blue,
         [''] = colors.blue,V=colors.blue,
         c = colors.magenta,no = colors.red,s = colors.orange,
@@ -29,6 +31,7 @@
       highlight = {colors.red,colors.bg,'bold'},
     },
   }
+
   gls.left[4] ={
     FileIcon = {
       provider = 'FileIcon',
@@ -70,6 +73,7 @@
       highlight = {colors.red,colors.bg}
     }
   }
+
   gls.left[9] = {
     DiagnosticWarn = {
       provider = 'DiagnosticWarn',
@@ -131,6 +135,7 @@
       highlight = {colors.green,colors.bg},
     }
   }
+
   gls.right[6] = {
     DiffModified = {
       provider = 'DiffModified',
@@ -139,6 +144,7 @@
       highlight = {colors.orange,colors.bg},
     }
   }
+
   gls.right[7] = {
     DiffRemove = {
       provider = 'DiffRemove',
