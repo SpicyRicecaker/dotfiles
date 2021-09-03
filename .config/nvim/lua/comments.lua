@@ -1,4 +1,4 @@
-local function load()
+(function ()
   require('kommentary.config').configure_language("rust", {
     prefer_single_line_comments = true,
   })
@@ -11,6 +11,4 @@ local function load()
   -- Command to auto add comment after
   vim.api.nvim_set_keymap('n', '<C-k>', "O// ", {silent = true, noremap = true})
   vim.api.nvim_set_keymap('n', '<C-j>', "o// ", {silent = true, noremap = true})
-end
-
-load()
+end)()

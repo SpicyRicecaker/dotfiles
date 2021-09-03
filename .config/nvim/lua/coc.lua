@@ -3,7 +3,7 @@ local function t(str)
   return vim.api.nvim_replace_termcodes(str, true, true, true)
 end
 
-_G.convenience = {
+_G.coc = {
   -- Checks if there is a whitespace behind the cursor
   check_back_space = function ()
     -- Get col of cursor
@@ -70,24 +70,24 @@ local function coc_load ()
   vim.o.shortmess = vim.o.shortmess .. 'c'
   local m = vim.api.nvim_set_keymap
 
-  m('n', '<C-f>', 'v:lua.scroll_floating_f()', {expr = true, silent = true, noremap = true, nowait = true})
-  m('n', '<C-b>', 'v:lua.scroll_floating_b()', {expr = true, silent = true, noremap = true, nowait = true})
-  m('i', '<C-f>', 'v:lua.scroll_floating_r()', {expr = true, silent = true, noremap = true, nowait = true})
-  m('i', '<C-b>', 'v:lua.scroll_floating_l()', {expr = true, silent = true, noremap = true, nowait = true})
-  m('v', '<C-f>', 'v:lua.scroll_floating_f()', {expr = true, silent = true, noremap = true, nowait = true})
-  m('v', '<C-b>', 'v:lua.scroll_floating_b()', {expr = true, silent = true, noremap = true, nowait = true})
+  m('n', '<C-f>', 'v:lua.coc.scr_f()', {expr = true, silent = true, noremap = true, nowait = true})
+  m('n', '<C-b>', 'v:lua.coc.scr_b()', {expr = true, silent = true, noremap = true, nowait = true})
+  m('i', '<C-f>', 'v:lua.coc.scr_r()', {expr = true, silent = true, noremap = true, nowait = true})
+  m('i', '<C-b>', 'v:lua.coc.scr_l()', {expr = true, silent = true, noremap = true, nowait = true})
+  m('v', '<C-f>', 'v:lua.coc.scr_f()', {expr = true, silent = true, noremap = true, nowait = true})
+  m('v', '<C-b>', 'v:lua.coc.scr_b()', {expr = true, silent = true, noremap = true, nowait = true})
 
   -- Use K to show documentation in preview window.
-  m('n', 'K', '<Cmd>lua smart_show_documentation()<CR>', {silent = true, noremap = true})
+  m('n', 'K', '<Cmd>lua coc.show_doc()<CR>', {silent = true, noremap = true})
 
   -- Use tab for trigger completion with characters ahead and navigate.
   -- NOTE: Use command ':verbose imap <tab>' to make sure tab is not mapped by
   -- other plugin before putting this into your config.
   -- inoremap <silent><expr> <TAB> pumvisible() ? "\<C-n>" : <SID>check_back_space() ? "\<TAB>" : coc#refresh()
-  m('i', '<CR>', 'v:lua.smart_enter()', {expr = true, silent = true, noremap = true})
-  m('i', '<Tab>', 'v:lua.smart_tab()', {expr = true, silent = true, noremap = true})
+  m('i', '<CR>', 'v:lua.coc.enter()', {expr = true, silent = true, noremap = true})
+  m('i', '<Tab>', 'v:lua.coc.tab()', {expr = true, silent = true, noremap = true})
   -- inoremap <expr><S-TAB> pumvisible() ? "\<C-p>" : "\<C-h>"
-  m('i', '<S-Tab>', 'v:lua.smart_shift_tab()', {expr = true, silent = true, noremap = true})
+  m('i', '<S-Tab>', 'v:lua.coc.shift_tab()', {expr = true, silent = true, noremap = true})
 
   -- m('i', '<c-space>', '<Cmd>call coc#refresh()<CR>', {noremap = true, silent = true})
   m('i', '<c-space>', 'coc#refresh()', {expr = true, noremap = true, silent = true})

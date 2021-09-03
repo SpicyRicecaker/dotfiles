@@ -35,9 +35,7 @@ end
 
 -- local function other() vim.cmd [[set guifont=Fira\ Code\ Nerd\ Font:h30]] end
 
-local function load()
+(function ()
     color_scheme()
     treesitter()
-end
-
-load()
+end)()

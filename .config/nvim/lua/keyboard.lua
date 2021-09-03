@@ -1,4 +1,4 @@
-local function load_keybindings()
+(function ()
 	vim.g.mapleader = ' '
 
 	vim.api.nvim_set_keymap('n', '<Leader>ff',
@@ -39,6 +39,4 @@ local function load_keybindings()
 
 	-- Save your pinky
 	vim.api.nvim_set_keymap('i', 'jk', '<Esc>', {silent = true, noremap = true})
-end
-
-load_keybindings()
+end)()
