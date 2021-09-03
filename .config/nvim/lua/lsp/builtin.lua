@@ -29,7 +29,7 @@ local on_attach = function(client, bufnr)
   buf_set_keymap('n', '<space>q', '<cmd>lua vim.lsp.diagnostic.set_loclist()<CR>', opts)
   buf_set_keymap('n', '<space>h', '<cmd>lua vim.lsp.buf.formatting()<CR>', opts)
 
-  -- Debug mappings
+  --[[ -- Debug mappings
   buf_set_keymap('n', '<F5>', "<cmd>lua require'dap'.continue()<CR>", opts)
   buf_set_keymap('n', '<F10>', "<cmd>lua require'dap'.step_over()<CR>", opts)
   buf_set_keymap('n', '<F11>', "<cmd>lua require'dap'.step_into()<CR>", opts)
@@ -45,7 +45,7 @@ local on_attach = function(client, bufnr)
   buf_set_keymap('n', '<Leader>dt', "<cmd>lua require'dap'.disconnect()<CR><cmd>lua require'dap'.close()<CR>", opts)
 
   -- Add ui
-  require'dapui'.setup{}
+  require'dapui'.setup{} ]]
 end
 
 (function ()
