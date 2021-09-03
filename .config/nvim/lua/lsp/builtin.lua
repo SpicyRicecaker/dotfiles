@@ -43,6 +43,9 @@ local on_attach = function(client, bufnr)
   buf_set_keymap('n', '<Leader>dc', "<cmd>lua require'dap'.disconnect()<CR>", opts)
   -- Terminate debug session
   buf_set_keymap('n', '<Leader>dt', "<cmd>lua require'dap'.disconnect()<CR><cmd>lua require'dap'.close()<CR>", opts)
+
+  -- Add ui
+  require'dapui'.setup{}
 end
 
 (function ()
@@ -123,4 +126,23 @@ end
     }
   }
   lspconfig.sumneko_lua.setup(luadev)
+
+  -- Setup dap
+  local dap = require('dap')
+  dap.adapters.cppdbg = {
+    type = 'executable',
+    command = '/home/spicy/git/cpptools-linux/extension/bin/OpenDebugAD7',
+  }
+  dap.configurations.rust = {
+    {
+      name = "Launch file",
+      type = "cppdbg",
+      request = "launch",
+      program = function()
+        return vim.fn.input('Path to executable: ', vim.fn.getcwd() .. '/', 'file')
+      end,
+      cwd = '${workspaceFolder}',
+      stopOnEntry = true,
+    }
+  }
 end)()
