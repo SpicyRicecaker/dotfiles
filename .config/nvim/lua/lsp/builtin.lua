@@ -128,7 +128,7 @@ end
   lspconfig.sumneko_lua.setup(luadev)
 
   -- Setup dap
-  local dap = require('dap')
+  --[[ local dap = require('dap')
   dap.adapters.cppdbg = {
     type = 'executable',
     command = '/home/spicy/git/cpptools-linux/extension/bin/OpenDebugAD7',
@@ -144,5 +144,5 @@ end
       cwd = '${workspaceFolder}',
       stopOnEntry = true,
     }
-  }
+  } ]]
 end)()
