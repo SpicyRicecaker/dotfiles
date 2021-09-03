@@ -65,9 +65,9 @@ end
 
   -- Rust
   require'rust-tools'.setup{
-    capabiliities = capabilities,
-    on_attach = on_attach,
     server = {
+      capabiliities = capabilities,
+      on_attach = on_attach,
       cargo = { allFeatures = true },
       checkOnSave = { command = 'clippy' }
     }
