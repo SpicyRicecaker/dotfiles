@@ -56,7 +56,6 @@ end
     sources = {
       { name = 'nvim_lsp' },
       { name = 'buffer' },
-      { name = 'path' },
       { name = 'luasnip' }
     },
     mapping = {
@@ -95,8 +94,7 @@ end
   local sumneko_binary_path = vim.fn.exepath('lua-language-server')
   local sumneko_root_path = vim.fn.fnamemodify(sumneko_binary_path, ':h:h:h')
   -- Not sure if lua-dev is actually doing anything lol
-  local luadev = require'lua-dev'.setup{
-    lspconfig = {
+  lspconfig.sumneko_lua.setup{
       capabiliities = capabilities,
       on_attach = on_attach,
       cmd = {sumneko_binary_path, "-E", sumneko_root_path .. "/main.lua"};
@@ -123,9 +121,7 @@ end
           },
         },
       },
-    }
   }
-  lspconfig.sumneko_lua.setup(luadev)
 
   -- Setup dap
   --[[ local dap = require('dap')

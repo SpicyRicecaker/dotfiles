@@ -20,17 +20,17 @@ return require'packer'.startup(function()
   -- use {'neoclide/coc.nvim', branch = 'release'}
 
   -- Debug!
-  use 'mfussenegger/nvim-dap'
+  -- use 'mfussenegger/nvim-dap'
   -- Add cool tree
-  use {
-    'theHamsta/nvim-dap-virtual-text', requires = {
-      'mfussenegger/nvim-dap',
-      'nvim-treesitter/nvim-treesitter'
-    },
-    config = function () vim.g.dap_virtual_text = true end
-  }
+  -- use {
+  --   'theHamsta/nvim-dap-virtual-text', requires = {
+  --     'mfussenegger/nvim-dap',
+  --     'nvim-treesitter/nvim-treesitter'
+  --   },
+  --   config = function () vim.g.dap_virtual_text = true end
+  -- }
 
-  use { "rcarriga/nvim-dap-ui", requires = {'mfussenegger/nvim-dap'} }
+  -- use { "rcarriga/nvim-dap-ui", requires = {'mfussenegger/nvim-dap'} }
 
   -- Autocomplete!
   use { 'hrsh7th/nvim-cmp', requires = {
@@ -38,8 +38,6 @@ return require'packer'.startup(function()
     'hrsh7th/cmp-nvim-lsp',
     -- Source: buffer
     'hrsh7th/cmp-buffer',
-    -- Source: system path
-    'hrsh7th/cmp-path',
     -- Snippet engine
     'L3MON4D3/LuaSnip',
     -- Source: snippet engine
@@ -58,9 +56,6 @@ return require'packer'.startup(function()
       'mfussenegger/nvim-dap'
     }
   }
-
-  -- Lua
-  use 'folke/lua-dev.nvim'
 
   -- Comments!
   use 'b3nj5m1n/kommentary'
