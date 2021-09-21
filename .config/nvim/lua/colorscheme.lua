@@ -1,7 +1,7 @@
 local function treesitter()
     require'nvim-treesitter.install'.compilers = {"clang"}
     require'nvim-treesitter.configs'.setup {
-        ensure_installed = "maintained",
+        ensure_installed = { 'rust', 'lua', 'bash', 'css', 'html', 'javascript', 'typescript', 'svelte', 'toml', 'yaml' },
         highlight = {
             enable = true,
             indent = {enable = true},
