@@ -1,6 +1,12 @@
-[credential "https://github.com"]
-	helper = 
-	helper = !/usr/bin/gh auth git-credential
+# This is Git's per-user configuration file.
 [user]
-	email = awesomenessisgolden@gmail.com
-	name = SpicyRicecaker
+	name = Andy Li
+	email = 54951411+SpicyRicecaker@users.noreply.github.com
+# Please adapt and uncomment the following lines:
+#	name = Andy Li
+#	email = awesomenessisgolden@gmail.com
+[filter "lfs"]
+	required = true
+	clean = git-lfs clean -- %f
+	smudge = git-lfs smudge -- %f
+	process = git-lfs filter-process
