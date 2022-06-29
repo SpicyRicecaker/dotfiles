@@ -31,8 +31,8 @@ return require('packer').startup(function()
         'numToStr/Comment.nvim',
         config = function()
             require('Comment').setup()
-            -- vim.keymap.set('i', '<C-_>', '<Plug>(comment_toggle_linewise)', {expr = true})
-            vim.keymap.set('i', '<C-_>', '<CMD>lua require("Comment.api").toggle_current_linewise()<CR><Esc>A')
+            -- for some reason after some time vim started recognizing `ctrl+/` as `<C-/>` instead of `^_`
+            vim.keymap.set('i', '<C-/>', '<CMD>lua require("Comment.api").toggle_current_linewise()<CR><Esc>A')
         end
     }
 
@@ -75,10 +75,17 @@ return require('packer').startup(function()
     use {
         'sainnhe/gruvbox-material',
         config = function()
-            vim.g.gruvbox_material_background = 'medium'
-            vim.g.gruvbox_material_better_performance = 1
-            vim.cmd[[colorscheme gruvbox-material]]
+            -- vim.g.gruvbox_material_background = 'medium'
+            -- vim.g.gruvbox_material_better_performance = 1
+            -- vim.cmd[[colorscheme gruvbox-material]]
         end,
+    }
+
+    use {
+        'rebelot/kanagawa.nvim',
+        config = function()
+            vim.cmd[[colorscheme kanagawa]]
+        end
     }
 
     use 'tpope/vim-surround'
