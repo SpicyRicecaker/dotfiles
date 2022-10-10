@@ -47,12 +47,12 @@ Ran 3 trials for each terminal in succession
 ## Text Editor
 
 - neovim
-- vscode (keep on running back to this while crying after breaking neovim config / accidentally deleting neovim config / spending 20 hours writing neovim config screwing up sleep schedule and losing sleep and losing the will to live much less code)
+- vscode (keep on running back to this while crying after breaking neovim config / accidentally deleting neovim config / spending 20 hours writing neovim config screwing up sleep schedule and losing sleep and losing the will to live)
 
 ## Desktop
 
 - gnome
-- ~~kde~~ not enough material design
+- ~~kde~~ not enough material design, too much customization
 
 ## Distro
 
@@ -61,8 +61,8 @@ Ran 3 trials for each terminal in succession
 
 ## Shell
 
-- nu
-- ~~fish~~ really hard to script with, but very user friendly for everything else
+- fish really hard to script with, but very user friendly for everything else
+- ~~nu~~ breaking changes to the vi editor 
 
 ## Node
 
