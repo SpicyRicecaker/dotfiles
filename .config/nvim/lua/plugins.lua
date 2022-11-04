@@ -1,22 +1,16 @@
--- never use mouse in vim lol
--- also it's distracting when you're typing but misclick trackpad
--- vim.o.mouse = nil
-
 vim.g.mapleader = ' '
 vim.o.expandtab = true
 vim.o.shiftwidth = 4
 vim.o.ignorecase = true
--- line number relative
--- vim.o.relativenumber = true
+
 -- save on focus shift, breaks like 99% of extensions but saves my pinky
 vim.cmd[[au FocusLost * silent :wa]]
 
 -- tsx support, vim style, instead of treesitter, since treesitter is perma bugged.
--- For webdev specifically, vscode is unequivocally better
+-- Though for webdev specifically, vscode is unequivocally better
 vim.cmd[[au BufNewFile,BufRead *.tsx setf typescriptreact]]
 
 vim.api.nvim_set_keymap('n', '<leader><leader>', 'ggVG:!rustfmt<CR><C-o>', { noremap = true })
-
 
 return require('packer').startup(function()
     use 'wbthomason/packer.nvim'
@@ -48,28 +42,13 @@ return require('packer').startup(function()
 
     use {
         'numToStr/Comment.nvim',
-        -- copied code from https://github.com/JoosepAlviste/nvim-ts-context-commentstring#commentnvim
-        -- not sure how slow this makes neovim, but hopefully it's async and it's still gotta be faster than vscode. Probably.
         config = function()
-            require('Comment').setup {
-                pre_hook = function(ctx)
-                    local U = require 'Comment.utils'
-
-                    local location = nil
-                    if ctx.ctype == U.ctype.block then
-                        location = require('ts_context_commentstring.utils').get_cursor_location()
-                    elseif ctx.cmotion == U.cmotion.v or ctx.cmotion == U.cmotion.V then
-                        location = require('ts_context_commentstring.utils').get_visual_start_location()
-                    end
-
-                    return require('ts_context_commentstring.internal').calculate_commentstring {
-                        key = ctx.ctype == U.ctype.line and '__default' or '__multiline',
-                        location = location,
-                    }
-                end,
+            require('Comment').setup{
+               pre_hook = require('ts_context_commentstring.integrations.comment_nvim').create_pre_hook(), 
             }
             -- for some reason after some time vim started recognizing `ctrl+/` as `<C-/>` instead of `^_`
-            vim.keymap.set('i', '<C-/>', '<cmd>lua require("Comment.api").toggle_current_linewise()<CR><Esc>A')
+            -- see :h command.api for the code below
+            vim.keymap.set('i', '<C-/>', "<cmd>lua require('Comment.api').toggle.linewise.current()<CR><Esc>A")
         end
     }
 
@@ -79,14 +58,14 @@ return require('packer').startup(function()
         requires = { {'JoosepAlviste/nvim-ts-context-commentstring'} },
         config = function()
             require'nvim-treesitter.configs'.setup {
-                ensure_installed = { 'lua', 'rust', 'toml', 'markdown', 'tsx', 'typescript', 'javascript', 'html', 'css', 'json', 'scheme', 'wgsl', 'cpp'},
+                ensure_installed = { 'lua', 'rust', 'toml', 'markdown', 'tsx', 'typescript', 'javascript', 'html', 'css', 'json', 'scheme', 'wgsl', 'cpp', 'fish'},
                 highlight = {
-                    enable = false,
-                    -- Treesitter highlighting is just slow as fk. Create any
-                    -- typescript or javascript file and add like 100 lines of
-                    -- code, and you'll notice slight input lag. Up it to 4000,
+                    enable = true,
+                    -- Treesitter highlighting is really slow. Create any
+                    -- typescript or javascript file and add ~100 lines of
+                    -- code. You'll notice slight input lag. Up it to 4000,
                     -- and you can barely type. There's no problem with typing
-                    -- on VSCode on basically files of any size, by the way.
+                    -- on VSCode on basically files of any size.
                     -- This is with an LSP and highlighting and whatever else.
                     --
                     -- The same happens with rust as well. Though it's fine for
@@ -94,7 +73,7 @@ return require('packer').startup(function()
                     -- While VSCode is able to type regularly, neovim is not
                     -- disable = { 'typescript', 'javascript', 'rust'},
                     -- I want markdown italics, so enabling this for now
-                    additional_vim_regex_highlighting = true
+                    -- additional_vim_regex_highlighting = true
                 },
                 incremental_selection = {
                     enable = true,
@@ -106,9 +85,7 @@ return require('packer').startup(function()
                     },
                 },
                 indent = {
-                    -- currently disabling as it's buggy with rust if let statements
-                    -- vim default indent is good enough
-                    enable = false
+                    enable = true
                 },
                 context_commentstring = {
                     enable = true,
@@ -136,18 +113,29 @@ return require('packer').startup(function()
     --     end,
     -- }
 
+    -- use {
+    --     'rebelot/kanagawa.nvim',
+    --     config = function()
+    --         vim.cmd[[colorscheme kanagawa]]
+    --     end
+    -- }
+
     use {
-        'rebelot/kanagawa.nvim',
+        "catppuccin/nvim",
+        as = "catppuccin",
         config = function()
-            vim.cmd[[colorscheme kanagawa]]
+            require("catppuccin").setup {
+                flavour = "macchiato" -- mocha, macchiato, frappe, latte
+            }
+            vim.api.nvim_command "colorscheme catppuccin"
         end
     }
 
     use 'tpope/vim-surround'
 
     -- debug 
-    -- use 'nvim-treesitter/playground'
-    use 'tweekmonster/startuptime.vim'
+    --[[ use 'nvim-treesitter/playground' ]]
+    --[[ use 'tweekmonster/startuptime.vim' ]]
 
     use 'mattn/emmet-vim'
     use 'leafgarland/typescript-vim'
