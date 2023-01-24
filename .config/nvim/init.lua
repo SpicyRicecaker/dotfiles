@@ -11,7 +11,8 @@ if vim.g.started_by_firenvim ~= nil then
     vim.cmd[[au BufEnter learn.zybooks.com_*.txt set filetype=cpp]]
     vim.g.firenvim_config = {
         ['localSettings'] = {
-            ['https://learn\\.zybooks\\.com.*'] = { selector = 'textarea:not([aria-labelledby^="short"])'} 
+            -- ['https://learn\\.zybooks\\.com.*'] = { selector = 'textarea:not([aria-labelledby^="short"])'} 
+            ['https://learn\\.zybooks\\.com.*'] = { selector = 'textarea.ace_text-input'} 
         }
     }
 end

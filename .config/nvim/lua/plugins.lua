@@ -3,6 +3,19 @@ vim.o.expandtab = true
 vim.o.shiftwidth = 4
 vim.o.ignorecase = true
 
+-- https://neovim.io/doc/user/quickref.html
+vim.api.nvim_set_keymap('i', '<C-f>', '<Right>', { noremap = true })
+vim.api.nvim_set_keymap('i', '<C-b>', '<Left>', { noremap = true })
+vim.api.nvim_set_keymap('i', '<C-m-f>', '<S-Right>', { noremap = true })
+vim.api.nvim_set_keymap('i', '<C-m-b>', '<S-Left>', { noremap = true })
+vim.api.nvim_set_keymap('i', '<m-bs>', '<C-w>', { noremap = true })
+vim.api.nvim_set_keymap('i', '<C-p>', '<Up>', { noremap = true })
+vim.api.nvim_set_keymap('i', '<C-n>', '<Down>', { noremap = true })
+vim.api.nvim_set_keymap('i', '<C-a>', '<Home>', { noremap = true })
+vim.api.nvim_set_keymap('i', '<C-e>', '<End>', { noremap = true })
+vim.api.nvim_set_keymap('i', '<D-v>', '<C-r>+', { noremap = true })
+vim.api.nvim_set_keymap('i', '<C-k>', '<Esc>lC', { noremap = true })
+
 -- save on focus shift, breaks like 99% of extensions but saves my pinky
 vim.cmd[[au FocusLost * silent :wa]]
 
@@ -113,23 +126,23 @@ return require('packer').startup(function()
     --     end,
     -- }
 
-    -- use {
-    --     'rebelot/kanagawa.nvim',
-    --     config = function()
-    --         vim.cmd[[colorscheme kanagawa]]
-    --     end
-    -- }
-
     use {
-        "catppuccin/nvim",
-        as = "catppuccin",
+        'rebelot/kanagawa.nvim',
         config = function()
-            require("catppuccin").setup {
-                flavour = "macchiato" -- mocha, macchiato, frappe, latte
-            }
-            vim.api.nvim_command "colorscheme catppuccin"
+            vim.cmd[[colorscheme kanagawa]]
         end
     }
+
+    -- use {
+    --     "catppuccin/nvim",
+    --     as = "catppuccin",
+    --     config = function()
+    --         require("catppuccin").setup {
+    --             flavour = "macchiato" -- mocha, macchiato, frappe, latte
+    --         }
+    --         vim.api.nvim_command "colorscheme catppuccin"
+    --     end
+    -- }
 
     use 'tpope/vim-surround'
 

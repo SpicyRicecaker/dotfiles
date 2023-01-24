@@ -1,15 +1,5 @@
-[credential "https://github.com"]
-	helper = 
-	helper = !gh auth git-credential
 [user]
-	email = awesomenessisgolden@gmail.com
-	name = SpicyRicecaker
-[filter "lfs"]
-	clean = git-lfs clean -- %f
-	smudge = git-lfs smudge -- %f
-	process = git-lfs filter-process
-	required = true
+    email = awesomenessisgolden@gmail.com
+    name = SpicyRicecaker
 [core]
-	editor = code --wait
-[credential]
-	helper = store
+    editor = code --wait
