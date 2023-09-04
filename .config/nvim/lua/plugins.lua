@@ -3,6 +3,9 @@ vim.o.expandtab = true
 vim.o.shiftwidth = 4
 vim.o.ignorecase = true
 
+vim.o.rnu = true
+vim.o.number = true
+
 -- https://neovim.io/doc/user/quickref.html
 vim.api.nvim_set_keymap('i', '<C-f>', '<Right>', { noremap = true })
 vim.api.nvim_set_keymap('i', '<C-b>', '<Left>', { noremap = true })
@@ -23,37 +26,62 @@ vim.cmd[[au FocusLost * silent :wa]]
 -- Though for webdev specifically, vscode is unequivocally better
 vim.cmd[[au BufNewFile,BufRead *.tsx setf typescriptreact]]
 
-vim.api.nvim_set_keymap('n', '<leader><leader>', 'ggVG:!rustfmt<CR><C-o>', { noremap = true })
+-- TODO need to allow user to run this ONLY in a rust file
+-- vim.api.nvim_set_keymap('n', '<leader><leader>', 'ggVG:!rustfmt<CR><C-o>', { noremap = true })
 
-return require('packer').startup(function()
-    use 'wbthomason/packer.nvim'
+local lazypath = vim.fn.stdpath("data") .. "/lazy/lazy.nvim"
+if not vim.loop.fs_stat(lazypath) then
+  vim.fn.system({
+    "git",
+    "clone",
+    "--filter=blob:none",
+    "https://github.com/folke/lazy.nvim.git",
+    "--branch=stable", -- latest stable release
+    lazypath,
+  })
+end
+vim.opt.rtp:prepend(lazypath)
 
-    use {
+-- q: is the `config` function of a extension still run if it is *not* loaded?
+-- we can test this by purposely setting a lazy function to true and checking if a known valid function (that is run before commands in the main file) still execute
+-- as zybooks are not in use currently however, is firenvim still useful?
+
+require('lazy').setup({
+    {
         'glacambre/firenvim',
-        run = function() vim.fn['firenvim#install'](0) end 
-    }
+        lazy = not vim.g.started_by_firenvim,
+        build = function() 
+            vim.fn['firenvim#install'](0)
+        end 
+    },
 
-    use {
+    {
         'nvim-telescope/telescope.nvim',
-        requires = { {'nvim-lua/plenary.nvim'}, {'kyazdani42/nvim-web-devicons'} },
+        dependencies = { 
+            'nvim-lua/plenary.nvim', 
+            'kyazdani42/nvim-web-devicons'
+        },
         config = function()
-            vim.api.nvim_set_keymap('n', '<leader>ff', '<cmd>Telescope find_files<CR>', { noremap = true })
-            vim.api.nvim_set_keymap('n', '<leader>fg', '<cmd>Telescope live_grep<CR>', { noremap = true })
-            vim.api.nvim_set_keymap('n', '<leader>fb', '<cmd>Telescope buffers<CR>', { noremap = true })
-            vim.api.nvim_set_keymap('n', '<leader>fh', '<cmd>Telescope help_tags<CR>', { noremap = true })
+            local builtin = require('telescope.builtin')
+            vim.keymap.set('n', '<leader>ff', builtin.find_files)
+            vim.keymap.set('n', '<leader>fg', builtin.live_grep)
+            vim.keymap.set('n', '<leader>fb', builtin.buffers)
+            vim.keymap.set('n', '<leader>fh', builtin.help_tags)
         end,
-    }
+    },
 
-    use { 
+    { 
         'nvim-telescope/telescope-file-browser.nvim',
-        requires = { { 'nvim-telescope/telescope.nvim' } },
+        dependencies = { 'nvim-telescope/telescope.nvim', 'nvim-lua/plenary.nvim' },
         config = function()
-            require('telescope').load_extension 'file_browser'
+            local telescope = require('telescope')
+            telescope.load_extension 'file_browser'
+            -- can't figure out a way to use vim.keymap.set for this line
             vim.api.nvim_set_keymap('n', '<leader>fp', '<cmd>Telescope file_browser<CR>', { noremap = true })
         end
-    }
+    },
 
-    use {
+    {
         'numToStr/Comment.nvim',
         config = function()
             require('Comment').setup{
@@ -63,15 +91,17 @@ return require('packer').startup(function()
             -- see :h command.api for the code below
             vim.keymap.set('i', '<C-/>', "<cmd>lua require('Comment.api').toggle.linewise.current()<CR><Esc>A")
         end
-    }
+    },
 
-    use {
+    {
         'nvim-treesitter/nvim-treesitter',
-        run = ':TSUpdate',
-        requires = { {'JoosepAlviste/nvim-ts-context-commentstring'} },
+        build = ':TSUpdate',
+        dependencies = { 'JoosepAlviste/nvim-ts-context-commentstring' },
         config = function()
             require'nvim-treesitter.configs'.setup {
                 ensure_installed = { 'lua', 'rust', 'toml', 'markdown', 'tsx', 'typescript', 'javascript', 'html', 'css', 'json', 'scheme', 'wgsl', 'cpp', 'fish'},
+                -- install parsers in parallel
+                sync_install = false,
                 highlight = {
                     enable = true,
                     -- Treesitter highlighting is really slow. Create any
@@ -108,32 +138,32 @@ return require('packer').startup(function()
             -- wgsl is scuffed for some reason, have to manually add this
             vim.cmd[[au BufRead,BufNewFile *.wgsl set filetype=wgsl]]
         end,
-    }
+    },
 
-    use {
+    {
         'max397574/better-escape.nvim',
         config = function()
             require'better_escape'.setup()
         end,
-    }
+    },
 
-    -- use {
+    -- {
     --     'sainnhe/gruvbox-material',
     --     config = function()
     --         -- vim.g.gruvbox_material_background = 'medium'
     --         -- vim.g.gruvbox_material_better_performance = 1
     --         -- vim.cmd[[colorscheme gruvbox-material]]
     --     end,
-    -- }
+    -- },
 
-    use {
+    {
         'rebelot/kanagawa.nvim',
         config = function()
-            vim.cmd[[colorscheme kanagawa]]
+	    vim.cmd[[colorscheme kanagawa]]
         end
-    }
+    },
 
-    -- use {
+    -- {
     --     "catppuccin/nvim",
     --     as = "catppuccin",
     --     config = function()
@@ -142,16 +172,22 @@ return require('packer').startup(function()
     --         }
     --         vim.api.nvim_command "colorscheme catppuccin"
     --     end
-    -- }
+    -- },
 
-    use 'tpope/vim-surround'
+    {
+        "kylechui/nvim-surround",
+        event = "VeryLazy",
+        config = function()
+            require("nvim-surround").setup()
+        end
+    },
 
     -- debug 
-    --[[ use 'nvim-treesitter/playground' ]]
-    --[[ use 'tweekmonster/startuptime.vim' ]]
+    --{ 'nvim-treesitter/playground' },
+    --{ 'tweekmonster/startuptime.vim' },
 
-    use 'mattn/emmet-vim'
-    use 'leafgarland/typescript-vim'
-    use 'peitalin/vim-jsx-typescript'
-end)
-
+    -- TODO: hasn't been updated in 2 years. replace with mason + emmet lsp
+    { 'mattn/emmet-vim' },
+    { 'leafgarland/typescript-vim'},
+    { 'peitalin/vim-jsx-typescript'},
+})
