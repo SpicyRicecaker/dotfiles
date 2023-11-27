@@ -1,3 +1,4 @@
+vim.g.skip_ts_context_commentstring_module = true
 vim.g.mapleader = ' '
 vim.o.expandtab = true
 vim.o.shiftwidth = 4
@@ -87,6 +88,7 @@ require('lazy').setup({
             require('Comment').setup{
                pre_hook = require('ts_context_commentstring.integrations.comment_nvim').create_pre_hook(), 
             }
+            vim.keymap.set('i', '<C-_>', "<cmd>lua require('Comment.api').toggle.linewise.current()<CR><Esc>A")
             -- for some reason after some time vim started recognizing `ctrl+/` as `<C-/>` instead of `^_`
             -- see :h command.api for the code below
             vim.keymap.set('i', '<C-/>', "<cmd>lua require('Comment.api').toggle.linewise.current()<CR><Esc>A")

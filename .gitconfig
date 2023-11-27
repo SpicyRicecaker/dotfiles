@@ -1,5 +1,13 @@
+[credential "https://github.com"]
+    helper = !/usr/bin/gh auth git-credential
+[credential "https://gist.github.com"]
+    helper = !/usr/bin/gh auth git-credential
 [user]
     email = awesomenessisgolden@gmail.com
     name = SpicyRicecaker
 [core]
     editor = code --wait
+[alias]
+    aa = add -A
+    cm = commit
+    pu = push origin master
