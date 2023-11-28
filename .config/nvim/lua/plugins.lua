@@ -3,6 +3,7 @@ vim.g.mapleader = ' '
 vim.o.expandtab = true
 vim.o.shiftwidth = 4
 vim.o.ignorecase = true
+vim.o.clipboard = "unnamedplus"
 
 vim.o.rnu = true
 vim.o.number = true

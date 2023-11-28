@@ -1,3 +1,54 @@
+# Setup Instructions
+
+Install `gh`, run `gh auth login`. Then open a shell and paste the following:
+
+```shell
+echo "alias dotgit='/usr/bin/git --git-dir=$HOME/dotfiles.git --work-tree=$HOME'" > ~/.bashrc
+source ~/.bashrc
+dotgit clone --bare https://SpicyRicecaker/dotfiles.git
+# delete conflicting files if needed
+dotgit checkout
+```
+
+Now manage your config files as you would a normal git repository. Easily add all modified files with
+
+```shell
+dotgit add -u
+```
+
+However, new files must be added manually. Do not use `dotgit add -A` unless you want a 5GB commit.
+
+# Programs Used
+
+## Terminal
+
+- kitty
+- ~~alacritty~~ latency too high, tmux adds dependency
+
+## Text Editor
+
+- vscode AND neovim for quick file editing
+
+## Desktop
+
+- gnome
+- ~~kde~~ not enough material design, too much customization
+
+## Distro
+
+- fedora
+- ~~arch~~ it broke and I was too lazy to fix it
+
+## Shell
+
+- fish really hard to script with, but very user friendly for everything else
+- ~~nu~~ breaking changes to the vi editor 
+
+## Node
+
+- volta
+- ~~fnm~~ breaks on updating node on windows
+
 # Reason for going from alacritty -> kitty
 
 <center>
@@ -37,34 +88,3 @@ Used [Typometer](https://pavelfatin.com/typometer/) to benchmark 4 terminal emul
 
 Ran 3 trials for each terminal in succession
 
-# Using
-
-## Terminal
-
-- kitty
-- ~~alacritty~~ latency too high, tmux adds dependency
-
-## Text Editor
-
-- neovim
-- vscode (keep on running back to this while crying after breaking neovim config / accidentally deleting neovim config / spending 20 hours writing neovim config screwing up sleep schedule and losing sleep and losing the will to live)
-
-## Desktop
-
-- gnome
-- ~~kde~~ not enough material design, too much customization
-
-## Distro
-
-- fedora
-- ~~arch~~ it broke and I was too lazy to fix it
-
-## Shell
-
-- fish really hard to script with, but very user friendly for everything else
-- ~~nu~~ breaking changes to the vi editor 
-
-## Node
-
-- volta
-- ~~fnm~~ breaks on updating node on windows
