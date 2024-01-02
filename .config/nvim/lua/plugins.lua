@@ -7,6 +7,7 @@ vim.o.clipboard = "unnamedplus"
 
 vim.o.rnu = true
 vim.o.number = true
+vim.o.clipboard = 'unnamedplus'
 
 -- https://neovim.io/doc/user/quickref.html
 vim.api.nvim_set_keymap('i', '<C-f>', '<Right>', { noremap = true })
@@ -21,16 +22,18 @@ vim.api.nvim_set_keymap('i', '<C-e>', '<End>', { noremap = true })
 vim.api.nvim_set_keymap('i', '<D-v>', '<C-r>+', { noremap = true })
 vim.api.nvim_set_keymap('i', '<C-k>', '<Esc>lC', { noremap = true })
 
--- save on focus shift, breaks like 99% of extensions but saves my pinky
+-- save on focus shift
+-- for files which do not yet have a name, an annoying error is thrown on alt tab...
 vim.cmd[[au FocusLost * silent :wa]]
 
 -- tsx support, vim style, instead of treesitter, since treesitter is perma bugged.
 -- Though for webdev specifically, vscode is unequivocally better
 vim.cmd[[au BufNewFile,BufRead *.tsx setf typescriptreact]]
 
--- TODO need to allow user to run this ONLY in a rust file
+-- TODO only allow user to run this in a rust file
 -- vim.api.nvim_set_keymap('n', '<leader><leader>', 'ggVG:!rustfmt<CR><C-o>', { noremap = true })
 
+-- boostrap 
 local lazypath = vim.fn.stdpath("data") .. "/lazy/lazy.nvim"
 if not vim.loop.fs_stat(lazypath) then
   vim.fn.system({
@@ -49,13 +52,13 @@ vim.opt.rtp:prepend(lazypath)
 -- as zybooks are not in use currently however, is firenvim still useful?
 
 require('lazy').setup({
-    {
-        'glacambre/firenvim',
-        lazy = not vim.g.started_by_firenvim,
-        build = function() 
-            vim.fn['firenvim#install'](0)
-        end 
-    },
+    -- {
+    --     'glacambre/firenvim',
+    --     lazy = not vim.g.started_by_firenvim,
+    --     build = function() 
+    --         vim.fn['firenvim#install'](0)
+    --     end 
+    -- },
 
     {
         'nvim-telescope/telescope.nvim',
@@ -86,6 +89,7 @@ require('lazy').setup({
     {
         'numToStr/Comment.nvim',
         config = function()
+            -- see https://github.com/JoosepAlviste/nvim-ts-context-commentstring/wiki/Integrations#commentnvim
             require('Comment').setup{
                pre_hook = require('ts_context_commentstring.integrations.comment_nvim').create_pre_hook(), 
             }
@@ -93,6 +97,15 @@ require('lazy').setup({
             -- for some reason after some time vim started recognizing `ctrl+/` as `<C-/>` instead of `^_`
             -- see :h command.api for the code below
             vim.keymap.set('i', '<C-/>', "<cmd>lua require('Comment.api').toggle.linewise.current()<CR><Esc>A")
+        end
+    },
+
+    {
+        'JoosepAlviste/nvim-ts-context-commentstring',
+        config = function()
+            require('ts_context_commentstring').setup {
+                enable_autocmd = false,
+            }
         end
     },
 
@@ -133,10 +146,6 @@ require('lazy').setup({
                 indent = {
                     enable = true
                 },
-                context_commentstring = {
-                    enable = true,
-                    enable_autocmd = false
-                }
             }
             -- wgsl is scuffed for some reason, have to manually add this
             vim.cmd[[au BufRead,BufNewFile *.wgsl set filetype=wgsl]]
@@ -190,7 +199,7 @@ require('lazy').setup({
     --{ 'tweekmonster/startuptime.vim' },
 
     -- TODO: hasn't been updated in 2 years. replace with mason + emmet lsp
-    { 'mattn/emmet-vim' },
-    { 'leafgarland/typescript-vim'},
-    { 'peitalin/vim-jsx-typescript'},
+    -- { 'mattn/emmet-vim' },
+    -- { 'leafgarland/typescript-vim'},
+    -- { 'peitalin/vim-jsx-typescript'},
 })
