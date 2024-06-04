@@ -112,17 +112,19 @@ require('lazy').setup({
     {
         'nvim-treesitter/nvim-treesitter',
         build = ':TSUpdate',
-        dependencies = { 'JoosepAlviste/nvim-ts-context-commentstring' },
+        -- dependencies = { 'JoosepAlviste/nvim-ts-context-commentstring' },
         config = function()
             -- load our custom tree-sitter grammar
-            local parser_configs = require "nvim-treesitter.parsers".get_parser_configs()
-            parser_configs.wgsl = {
-                install_info = {
-                    url = '~/git/tree-sitter-wgsl',
-                    files = { 'src/parser.c' },
-                }
-            }
-            require'nvim-treesitter.configs'.setup {
+            -- local parser_configs = require "nvim-treesitter.parsers".get_parser_configs()
+            -- parser_configs.wgsl = {
+            --     install_info = {
+            --         url = '~/git/tree-sitter-wgsl',
+            --         files = { 'src/parser.c' },
+            --     }
+            -- }
+            --
+            local configs = require("nvim-treesitter.configs")
+            configs.setup({
                 ensure_installed = { 'lua', 'rust', 'toml', 'markdown', 'tsx', 'typescript', 'javascript', 'html', 'css', 'json', 'scheme', 'wgsl', 'cpp', 'fish' },
                 -- install parsers in parallel
                 sync_install = false,
@@ -154,10 +156,10 @@ require('lazy').setup({
                 indent = {
                     enable = true
                 },
-            }
+            })
             -- wgsl is scuffed for some reason, have to manually add this
-            vim.cmd[[au BufRead,BufNewFile *.wgsl set filetype=wgsl]]
-        end,
+            -- vim.cmd[[au BufRead,BufNewFile *.wgsl set filetype=wgsl]]
+        end
     },
 
     {
@@ -210,10 +212,12 @@ require('lazy').setup({
     -- { 'mattn/emmet-vim' },
     -- { 'leafgarland/typescript-vim'},
     -- { 'peitalin/vim-jsx-typescript'},
-}, {
-    dev = {
-        path = "~/projects",
-        patterns = { "nvim-treesitter" },
-        fallback = false
-    }
-})
+} 
+-- {
+--     dev = {
+--         path = "~/projects",
+--         patterns = { "nvim-treesitter" },
+--         fallback = false
+--     }
+-- }
+)
