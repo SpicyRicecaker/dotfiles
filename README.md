@@ -5,7 +5,7 @@ Install `gh`, run `gh auth login`. Then open a shell and paste the following:
 ```shell
 echo "alias dotgit='/usr/bin/git --git-dir=$HOME/dotfiles.git --work-tree=$HOME'" > ~/.bashrc
 source ~/.bashrc
-dotgit clone --bare https://SpicyRicecaker/dotfiles.git
+dotgit clone --bare https://github.com/SpicyRicecaker/dotfiles.git
 # delete conflicting files if needed
 dotgit checkout
 ```
