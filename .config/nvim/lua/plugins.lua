@@ -21,10 +21,38 @@ vim.api.nvim_set_keymap('i', '<C-a>', '<Home>', { noremap = true })
 vim.api.nvim_set_keymap('i', '<C-e>', '<End>', { noremap = true })
 vim.api.nvim_set_keymap('i', '<D-v>', '<C-r>+', { noremap = true })
 vim.api.nvim_set_keymap('i', '<C-k>', '<Esc>lC', { noremap = true })
+vim.api.nvim_set_keymap('i', '<M-BS>', '<C-w>', { noremap = true })
 
 -- save on focus shift
 -- for files which do not yet have a name, an annoying error is thrown on alt tab...
-vim.cmd[[au FocusLost * silent :wa]]
+vim.api.nvim_create_autocmd("FocusLost", {
+  group = vim.api.nvim_create_augroup("AutoSaveFocusLost", { clear = true }),
+  callback = function()
+    local current_buf = vim.api.nvim_get_current_buf()
+    local bufnr = vim.fn.bufnr("%") -- Get current buffer number
+
+    -- Check if the buffer is valid and still exists
+    if not vim.api.nvim_buf_is_valid(current_buf) then
+      return
+    end
+
+    -- Get buffer options
+    local buflisted = vim.api.nvim_buf_get_option(current_buf, 'buflisted')
+    local modified = vim.api.nvim_buf_get_option(current_buf, 'modified')
+    local readonly = vim.api.nvim_buf_get_option(current_buf, 'readonly')
+    local bufname = vim.api.nvim_buf_get_name(current_buf)
+
+    -- Conditions for saving:
+    -- 1. Buffer must be listed (not a scratch buffer, help buffer, etc.)
+    -- 2. Buffer must be modified
+    -- 3. Buffer must NOT be read-only
+    -- 4. Buffer must have a file name (not unnamed)
+    if buflisted and modified and not readonly and #bufname > 0 then
+      vim.cmd("silent! wa") -- Use silent! to suppress *all* messages, including "no write since last change"
+    end
+  end,
+  desc = "Autosave on FocusLost for modified, writable, named buffers",
+})
 
 -- tsx support, vim style, instead of treesitter, since treesitter is perma bugged.
 -- Though for webdev specifically, vscode is unequivocally better
@@ -100,14 +128,14 @@ require('lazy').setup({
         end
     },
 
-    {
-        'JoosepAlviste/nvim-ts-context-commentstring',
-        config = function()
-            require('ts_context_commentstring').setup {
-                enable_autocmd = false,
-            }
-        end
-    },
+    -- {
+    --     'JoosepAlviste/nvim-ts-context-commentstring',
+    --     config = function()
+    --         require('ts_context_commentstring').setup {
+    --             enable_autocmd = false,
+    --         }
+    --     end
+    -- },
 
     {
         'nvim-treesitter/nvim-treesitter',
@@ -214,6 +242,6 @@ require('lazy').setup({
     dev = {
         path = "~/projects",
         patterns = { "nvim-treesitter" },
-        fallback = false
+        fallback = true
     }
 })

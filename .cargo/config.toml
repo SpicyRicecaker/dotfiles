@@ -2,9 +2,10 @@
 linker = "clang"
 rustflags = ["-C", "link-arg=-fuse-ld=/usr/local/bin/mold"]
 
-[target.aarch64-apple-darwin]
-linker = "clang"
-rustflags = ["-C", "link-arg=-fuse-ld=/usr/local/bin/ld64.mold"]
+# [target.aarch64-apple-darwin]
+# linker = "clang"
+# rustflags = ["-C", "link-arg=-fuse-ld=/usr/local/bin/ld64.mold"]
 
-[build]
-rustflags = ["-Z", "threads=8"]
+# [build]
+# rustflags = ["-Z", "threads=8"]
+
