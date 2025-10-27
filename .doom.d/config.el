@@ -74,6 +74,31 @@
 ;; You can also try 'gd' (or 'C-c c d') to jump to their definition and see how
 ;; they are implemented.
 
+;; (global-evil-colemak-basics-mode)
+
+;; my personal colemak vim keybindings for sanity
+;; the important one is that the window commands get mapped
+;; j -> n
+;; k -> e
+;; i -> l
+;; same for window keys, but that's another matter
+;; will restore keys with what they were swapped by
+;; should be no problem
+(after! evil
+   (map! :nv "n" 'evil-next-line)
+   (map! :nv "e" 'evil-previous-line)
+   (map! :nv "i" 'evil-forward-char)
+   (map! :nv "s" 'evil-delete)
+   (map! :n "l" 'evil-insert)
+   (map! :n "k" 'evil-forward-word-end)
+   (map! :n "j" 'evil-ex-search-next)
+   (map! :n "J" 'evil-ex-search-previous))
+
+(after! evil
+   (map! :nv "C-w i" 'evil-window-next)
+   (map! :nv "C-w n" 'evil-window-down)
+   (map! :nv "C-w e" 'evil-window-up))
+
 (after! evil
    ;; (evil-define-key 'insert 'global (kbd "C-n") 'next-line)
    (map! :i "C-n" 'next-line)
@@ -83,12 +108,7 @@
    (map! :i "C-w" 'nil))
 
 ;; ~/.doom.d/config.el
-;;
-
-(setq markdown-mode-hook (lambda () (progn (keymap-local-set "<backtab>" 'evil-shift-left-line) (message "successfully unset key") )))
-
-
-(pcase system-type
+(setq markdown-mode-hook (lambda () (progn (keymap-local-set "<backtab>" 'evil-shift-left-line) (message "successfully unset key") ))) (pcase system-type
   ('darwin (progn
     (setq mac-right-option-modifier 'meta
           mac-option-modifier 'meta)
@@ -96,11 +116,15 @@
     (message "mac detected!")))
   ('windows-nt))
 
+(global-set-key (kbd "M-,") 'execute-extended-command)
+(global-set-key (kbd "C-,") ctl-x-map)
+
 (after! markdown-mode
 ;; This tells markdown-mode to download and display remote images.
-(setq markdown-display-remote-images t))
-(setq markdown-max-image-size '(400 . 200))
+  (setq markdown-display-remote-images t))
+  (setq markdown-max-image-size '(400 . 200))
+;; disable evil snipe for now
 
-(setq undo-limit 80000000)             ; An absurd 80 MB of undo history per buffer
-(setq undo-outer-limit 100000000)       ; An even more absurd 100 MB soft limit
-(setq undo-strong-limit 120000000)      ; An even more absurd 120 MB hard limit
+;; (setq undo-limit 80000000)             ; An absurd 80 MB of undo history per buffer
+;; (setq undo-outer-limit 100000000)       ; An even more absurd 100 MB soft limit
+;; (setq undo-strong-limit 120000000)      ; An even more absurd 120 MB hard limit

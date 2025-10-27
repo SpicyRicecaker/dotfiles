@@ -1,5 +1,5 @@
 ;;; ...  -*- lexical-binding: t -*-
-;; try to save pinkys
+;; try to save pinkies
 (global-set-key (kbd "C-,") ctl-x-map)
 (global-set-key (kbd "M-,") 'execute-extended-command)
 
@@ -26,6 +26,9 @@
 ;; Later, after startup is complete:
 (setq gc-cons-threshold 50000000)
 
+;; disable syntax highlighting
+(global-font-lock-mode -1)
+
 (setq backup-directory-alist '(("." . "~/.local/share/emacs"))
   backup-by-copying t    ; Don't delink hardlinks
   version-control t      ; Use version numbers on backups
@@ -34,11 +37,52 @@
   kept-old-versions 2    ; and how many of the old
   )
 
-;; Optional: To truly get "boring white text," disable syntax highlighting
-;; This will make all text (code, comments, strings) the default white color.
-;; Remove or comment out this line if you want to keep syntax highlighting.
-(global-font-lock-mode -1)
+;; packages
 
-;; Store customizations in a separate file
+(require 'package)
+(add-to-list 'package-archives '("melpa" . "https://melpa.org/packages/") t)
+(package-initialize)
+(unless package-archive-contents
+  (package-refresh-contents))
+
+(require 'use-package)
+
+;; (use-package gnuplot
+;;   :ensure t)
+
+(use-package vundo
+  :ensure t
+  :bind
+  ("C-c v" . vundo))
+
+(pcase system-type
+  ('darwin
+   (setq exec-path (cons "/usr/local/bin" exec-path))
+   (setq exec-path (cons "/opt/homebrew/bin" exec-path))
+   (setenv "PATH" (mapconcat 'identity exec-path ":"))))
+
+;; getting gnuplot to work
+(setq explicit-shell-file-name "zsh")
+(setq calc-gnuplot-default-device "qt")
+
+(defun s ()
+  (interactive)
+  (cd "~/git/2025F/cs474/xv6-labs-2025"))
+
+(defun n ()
+  (interactive)
+  (cd "~/git/notes-obsidian"))
+
+(defun h ()
+  (interactive)
+  (cd "~/git/tulip2"))
+
+(defun c ()
+  (interactive)
+  (cd "~/.config/emacs"))
+
+(setq xref-search-program 'ripgrep)
+
+;; store customizations in a separate file
 (setq custom-file (locate-user-emacs-file "custom.el"))
 (load custom-file 'noerror)
