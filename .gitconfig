@@ -2,7 +2,7 @@
     email = awesomenessisgolden@gmail.com
     name = SpicyRicecaker
 [core]
-    editor = code --wait
+    editor = nvim
 [alias]
     aa = add -A
     cm = commit
@@ -14,3 +14,7 @@
 	required = true
 [merge]
 	conflictstyle = diff3
+[credential "https://github.com"]
+	helper = !/usr/bin/gh auth git-credential
+[credential "https://gist.github.com"]
+	helper = !/usr/bin/gh auth git-credential

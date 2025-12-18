@@ -1,247 +1,183 @@
-vim.g.skip_ts_context_commentstring_module = true
-vim.g.mapleader = ' '
-vim.o.expandtab = true
-vim.o.shiftwidth = 4
-vim.o.ignorecase = true
-vim.o.clipboard = "unnamedplus"
-
-vim.o.rnu = true
-vim.o.number = true
-vim.o.clipboard = 'unnamedplus'
-
--- https://neovim.io/doc/user/quickref.html
-vim.api.nvim_set_keymap('i', '<C-f>', '<Right>', { noremap = true })
-vim.api.nvim_set_keymap('i', '<C-b>', '<Left>', { noremap = true })
-vim.api.nvim_set_keymap('i', '<C-m-f>', '<S-Right>', { noremap = true })
-vim.api.nvim_set_keymap('i', '<C-m-b>', '<S-Left>', { noremap = true })
-vim.api.nvim_set_keymap('i', '<m-bs>', '<C-w>', { noremap = true })
-vim.api.nvim_set_keymap('i', '<C-p>', '<Up>', { noremap = true })
-vim.api.nvim_set_keymap('i', '<C-n>', '<Down>', { noremap = true })
-vim.api.nvim_set_keymap('i', '<C-a>', '<Home>', { noremap = true })
-vim.api.nvim_set_keymap('i', '<C-e>', '<End>', { noremap = true })
-vim.api.nvim_set_keymap('i', '<D-v>', '<C-r>+', { noremap = true })
-vim.api.nvim_set_keymap('i', '<C-k>', '<Esc>lC', { noremap = true })
-vim.api.nvim_set_keymap('i', '<M-BS>', '<C-w>', { noremap = true })
-
--- save on focus shift
--- for files which do not yet have a name, an annoying error is thrown on alt tab...
--- vim.api.nvim_create_autocmd("FocusLost", {
---   group = vim.api.nvim_create_augroup("AutoSaveFocusLost", { clear = true }),
---   callback = function()
---     local current_buf = vim.api.nvim_get_current_buf()
---     local bufnr = vim.fn.bufnr("%") -- Get current buffer number
--- 
---     -- Check if the buffer is valid and still exists
---     if not vim.api.nvim_buf_is_valid(current_buf) then
---       return
---     end
--- 
---     -- Get buffer options
---     local buflisted = vim.api.nvim_buf_get_option(current_buf, 'buflisted')
---     local modified = vim.api.nvim_buf_get_option(current_buf, 'modified')
---     local readonly = vim.api.nvim_buf_get_option(current_buf, 'readonly')
---     local bufname = vim.api.nvim_buf_get_name(current_buf)
--- 
---     -- Conditions for saving:
---     -- 1. Buffer must be listed (not a scratch buffer, help buffer, etc.)
---     -- 2. Buffer must be modified
---     -- 3. Buffer must NOT be read-only
---     -- 4. Buffer must have a file name (not unnamed)
---     if buflisted and modified and not readonly and #bufname > 0 then
---       vim.cmd("silent! wa") -- Use silent! to suppress *all* messages, including "no write since last change"
---     end
---   end,
---   desc = "Autosave on FocusLost for modified, writable, named buffers",
--- })
-
--- tsx support, vim style, instead of treesitter, since treesitter is perma bugged.
--- Though for webdev specifically, vscode is unequivocally better
--- vim.cmd[[au BufNewFile,BufRead *.tsx setf typescriptreact]]
-
--- TODO only allow user to run this in a rust file
--- vim.api.nvim_set_keymap('n', '<leader><leader>', 'ggVG:!rustfmt<CR><C-o>', { noremap = true })
-
--- boostrap 
-local lazypath = vim.fn.stdpath("data") .. "/lazy/lazy.nvim"
-if not vim.loop.fs_stat(lazypath) then
-  vim.fn.system({
-    "git",
-    "clone",
-    "--filter=blob:none",
-    "https://github.com/folke/lazy.nvim.git",
-    "--branch=stable", -- latest stable release
-    lazypath,
-  })
-end
-vim.opt.rtp:prepend(lazypath)
-
--- q: is the `config` function of a extension still run if it is *not* loaded?
--- we can test this by purposely setting a lazy function to true and checking if a known valid function (that is run before commands in the main file) still execute
--- as zybooks are not in use currently however, is firenvim still useful?
-
-require('lazy').setup({
-    -- {
-    --     'glacambre/firenvim',
-    --     lazy = not vim.g.started_by_firenvim,
-    --     build = function() 
-    --         vim.fn['firenvim#install'](0)
-    --     end 
-    -- },
-
+return {
+    "folke/lazydev.nvim",
+    "folke/which-key.nvim",
     {
-        'nvim-telescope/telescope.nvim',
-        dependencies = { 
-            'nvim-lua/plenary.nvim', 
-            'kyazdani42/nvim-web-devicons'
+        'MagicDuck/grug-far.nvim',
+        -- Note (lazy loading): grug-far.lua defers all it's requires so it's lazy by default
+        -- additional lazy config to defer loading is not really needed...
+        config = function()
+            -- optional setup call to override plugin options
+            -- alternatively you can set options with vim.g.grug_far = { ... }
+            require('grug-far').setup({
+                -- options, see Configuration section below
+                -- there are no required options atm
+            });
+        end
+    },
+    {
+        'stevearc/oil.nvim',
+        opts = {
+            -- This is what replaces netrw
+            default_file_explorer = true,
+            keymaps = {
+                -- Default is ` to cd, but you can remap it if you prefer
+                ["<leader>cd"] = "actions.cd",
+                -- You can also use `tcd` to only change directory for the current TAB
+                ["<leader>td"] = "actions.tcd",
+            },
         },
-        config = function()
-            local builtin = require('telescope.builtin')
-            vim.keymap.set('n', '<leader>ff', builtin.find_files)
-            vim.keymap.set('n', '<leader>fg', builtin.live_grep)
-            vim.keymap.set('n', '<leader>fb', builtin.buffers)
-            vim.keymap.set('n', '<leader>fh', builtin.help_tags)
-        end,
+        dependencies = { "nvim-tree/nvim-web-devicons" },
     },
-
-    { 
-        'nvim-telescope/telescope-file-browser.nvim',
-        dependencies = { 'nvim-telescope/telescope.nvim', 'nvim-lua/plenary.nvim' },
-        config = function()
-            local telescope = require('telescope')
-            telescope.load_extension 'file_browser'
-            -- can't figure out a way to use vim.keymap.set for this line
-            vim.api.nvim_set_keymap('n', '<leader>fp', '<cmd>Telescope file_browser<CR>', { noremap = true })
+    {'kevinhwang91/nvim-ufo',
+        dependencies = 'kevinhwang91/promise-async',
+        config = function () 
+            vim.keymap.set('n', 'zR', require('ufo').openAllFolds)
+            vim.keymap.set('n', 'zM', require('ufo').closeAllFolds)
+            require('ufo').setup({
+                provider_selector = function(bufnr, filetype, buftype)
+                    return {'treesitter', 'indent'}
+                end
+            })
         end
     },
-
     {
-        'numToStr/Comment.nvim',
-        config = function()
-            -- see https://github.com/JoosepAlviste/nvim-ts-context-commentstring/wiki/Integrations#commentnvim
-            require('Comment').setup{
-               pre_hook = require('ts_context_commentstring.integrations.comment_nvim').create_pre_hook(), 
-            }
-            vim.keymap.set('i', '<C-_>', "<cmd>lua require('Comment.api').toggle.linewise.current()<CR><Esc>A")
-            -- for some reason after some time vim started recognizing `ctrl+/` as `<C-/>` instead of `^_`
-            -- see :h command.api for the code below
-            vim.keymap.set('i', '<C-/>', "<cmd>lua require('Comment.api').toggle.linewise.current()<CR><Esc>A")
+        "ibhagwan/fzf-lua",
+        dependencies = { "nvim-tree/nvim-web-devicons" },
+        keys = {
+            -- The "Big 4" equivalents
+            { "<leader>ff", "<cmd>FzfLua files<cr>", desc = "Find Files" },
+            { "<leader>fg", "<cmd>FzfLua live_grep<cr>", desc = "Live Grep (Project)" },
+            { "<leader>fb", "<cmd>FzfLua buffers<cr>", desc = "Buffers" },
+            { "<leader>fh", "<cmd>FzfLua help_tags<cr>", desc = "Help Tags" },
+            -- Bonus: Resume last search (super useful)
+            { "<leader>fr", "<cmd>FzfLua resume<cr>", desc = "Resume Last Search" },
+        },
+        opts = {
+            -- This makes the previewer look/feel like Telescope
+            winopts = {
+                preview = {
+                    layout = "vertical", -- or 'horizontal'
+                },
+            },
+            keymap = {
+                builtin = {
+                    -- Familiar Telescope-style scrolling inside the preview window
+                    ["<C-d>"] = "preview-page-down",
+                    ["<C-u>"] = "preview-page-up",
+                },
+            },
+        }
+    },
+    { "folke/neoconf.nvim", cmd = "Neoconf" },
+    {
+      "folke/flash.nvim",
+      event = "VeryLazy",
+      ---@type Flash.Config
+      opts = {
+        search = { enabled = true }
+      },
+      keys = {
+        { "s", mode = { "n", "x", "o" }, function() require("flash").jump() end, desc = "Flash" },
+        { "S", mode = { "n", "x", "o" }, function() require("flash").treesitter() end, desc = "Flash Treesitter" },
+        { "r", mode = "o", function() require("flash").remote() end, desc = "Remote Flash" },
+        { "R", mode = { "o", "x" }, function() require("flash").treesitter_search() end, desc = "Treesitter Search" },
+        { "<c-s>", mode = { "c" }, function() require("flash").toggle() end, desc = "Toggle Flash Search" },
+      },
+    },
+    { 'nvim-mini/mini.nvim',
+        version = false,
+        config = function ()
+            require('mini.completion').setup()
+            -- require('mini.pick').setup()
+            -- vim.keymap.set('n', '<leader>ff', MiniPick.builtin.files, { desc = 'mini.pick files' })
+            -- vim.keymap.set('n', '<leader>fg', MiniPick.builtin.grep, { desc = 'mini.pick grep' })
+            -- vim.keymap.set('n', '<leader>fb', MiniPick.builtin.buffers, { desc = 'mini.pick buffers' })
+            -- vim.keymap.set('n', '<leader>fh', MiniPick.builtin.help, { desc = 'mini.pick help' })
         end
     },
-
-    -- {
-    --     'JoosepAlviste/nvim-ts-context-commentstring',
-    --     config = function()
-    --         require('ts_context_commentstring').setup {
-    --             enable_autocmd = false,
-    --         }
-    --     end
-    -- },
-
+    { 'mfussenegger/nvim-dap',
+        config = function ()
+            local dap = require('dap')
+            vim.keymap.set("n", "<leader>b", function() dap.toggle_breakpoint() end)
+        end
+    },
+    {
+        'mrcjkb/rustaceanvim',
+        version = '^6', -- Recommended
+        lazy = false, -- This plugin is already lazy
+        dependencies = 'mfussenegger/nvim-dap'
+    },
     {
         'nvim-treesitter/nvim-treesitter',
+        branch = "main",
         build = ':TSUpdate',
-        dependencies = { 'JoosepAlviste/nvim-ts-context-commentstring' },
-        config = function()
-            -- load our custom tree-sitter grammar
-            local parser_configs = require "nvim-treesitter.parsers".get_parser_configs()
-            parser_configs.wgsl = {
-                install_info = {
-                    url = '~/git/tree-sitter-wgsl',
-                    files = { 'src/parser.c' },
-                }
-            }
-            require'nvim-treesitter.configs'.setup {
-                ensure_installed = { 'lua', 'rust', 'toml', 'markdown', 'tsx', 'typescript', 'javascript', 'html', 'css', 'json', 'scheme', 'wgsl', 'cpp', 'fish' },
-                -- install parsers in parallel
-                sync_install = false,
-                highlight = {
-                    enable = true,
-                    -- Treesitter highlighting is really slow. Create any
-                    -- typescript or javascript file and add ~100 lines of
-                    -- code. You'll notice slight input lag. Up it to 4000,
-                    -- and you can barely type. There's no problem with typing
-                    -- on VSCode on basically files of any size.
-                    -- This is with an LSP and highlighting and whatever else.
-                    --
-                    -- The same happens with rust as well. Though it's fine for
-                    -- a greater number of lines, latency certainly goes up.
-                    -- While VSCode is able to type regularly, neovim is not
-                    -- disable = { 'typescript', 'javascript', 'rust'},
-                    -- I want markdown italics, so enabling this for now
-                    -- additional_vim_regex_highlighting = true
-                },
-                incremental_selection = {
-                    enable = true,
-                    keymaps = {
-                        init_selection = '<CR>',
-                        scope_incremental = '<CR>',
-                        node_incremental = '<TAB>',
-                        node_decremental = '<S-TAB>',
-                    },
-                },
-                indent = {
-                    enable = true
-                },
-            }
-            -- wgsl is scuffed for some reason, have to manually add this
-            vim.cmd[[au BufRead,BufNewFile *.wgsl set filetype=wgsl]]
-        end,
-    },
+        -- config = function(_, opts)
+        -- load our custom tree-sitter grammar
+        -- local parser_configs = require "nvim-treesitter.parsers".get_parser_configs()
+        -- parser_configs.wgsl = {
+        --     install_info = {
+        --         url = '~/git/tree-sitter-wgsl',
+        --         files = { 'src/parser.c' },
+        --     }
+        -- }
+        --
+        -- local TS = require("nvim-treesitter")
+        -- print('hi')
+        -- TS.setup(opts)
 
+        -- wgsl is scuffed for some reason, have to manually add this
+        -- vim.cmd[[au BufRead,BufNewFile *.wgsl set filetype=wgsl]]
+        -- end
+    },
+    {
+        'MeanderingProgrammer/treesitter-modules.nvim',
+        dependencies = { 'nvim-treesitter/nvim-treesitter' },
+        opts = {
+            ensure_installed = {
+                "bash",
+                "c",
+                "diff",
+                "html",
+                "javascript",
+                "jsdoc",
+                "json",
+                "jsonc",
+                "lua",
+                "luadoc",
+                "luap",
+                "markdown",
+                "markdown_inline",
+                "printf",
+                "python",
+                "query",
+                "regex",
+                "toml",
+                "tsx",
+                "typescript",
+                "vim",
+                "vimdoc",
+                "xml",
+                "yaml",
+                "rust"
+            },
+            fold = { enable = true },
+            highlight = { enable = true },
+            indent = { enable = true },
+            incremental_selection = { 
+                enable = true,
+                keymaps = {
+                    init_selection = 'gnn',
+                    scope_incremental = 'gnn',
+                    node_incremental = 'gni',
+                    node_decremental = 'gnd',
+                },
+            },
+        },
+    },
     {
         'max397574/better-escape.nvim',
         config = function()
             require'better_escape'.setup()
         end,
     },
-
-    -- {
-    --     'sainnhe/gruvbox-material',
-    --     config = function()
-    --         -- vim.g.gruvbox_material_background = 'medium'
-    --         -- vim.g.gruvbox_material_better_performance = 1
-    --         -- vim.cmd[[colorscheme gruvbox-material]]
-    --     end,
-    -- },
-
-    {
-        'rebelot/kanagawa.nvim',
-        config = function()
-	    vim.cmd[[colorscheme kanagawa]]
-        end
-    },
-
-    -- {
-    --     "catppuccin/nvim",
-    --     as = "catppuccin",
-    --     config = function()
-    --         require("catppuccin").setup {
-    --             flavour = "macchiato" -- mocha, macchiato, frappe, latte
-    --         }
-    --         vim.api.nvim_command "colorscheme catppuccin"
-    --     end
-    -- },
-
-    {
-        "kylechui/nvim-surround",
-        event = "VeryLazy",
-        config = function()
-            require("nvim-surround").setup()
-        end
-    },
-
-    -- debug 
-    --{ 'nvim-treesitter/playground' },
-    --{ 'tweekmonster/startuptime.vim' },
-
-    -- TODO: hasn't been updated in 2 years. replace with mason + emmet lsp
-    -- { 'mattn/emmet-vim' },
-    -- { 'leafgarland/typescript-vim'},
-    -- { 'peitalin/vim-jsx-typescript'},
-}, {
-    dev = {
-        path = "~/projects",
-        patterns = { "nvim-treesitter" },
-        fallback = true
-    }
-})
+}
