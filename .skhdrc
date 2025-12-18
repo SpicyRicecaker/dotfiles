@@ -210,8 +210,8 @@ alt + cmd + shift - 0 : yabai -m window --space 10; yabai -m space --focus 10
 # Last used workspace
 alt - tab : yabai -m space --focus recent
 
-cmd - tab : nil
-cmd - t : nil
+# cmd - tab : nil
+# cmd - t : nil
 # alt - t : nil
 
 # Next and previous workspace
