@@ -2,6 +2,60 @@ return {
     "folke/lazydev.nvim",
     "folke/which-key.nvim",
     {
+        "folke/trouble.nvim",
+        opts = {}, -- for default options, refer to the configuration section for custom setup.
+        cmd = "Trouble",
+        keys = {
+            {
+                "<leader>xx",
+                "<cmd>Trouble diagnostics toggle<cr>",
+                desc = "Diagnostics (Trouble)",
+            },
+            {
+                "<leader>xX",
+                "<cmd>Trouble diagnostics toggle filter.buf=0<cr>",
+                desc = "Buffer Diagnostics (Trouble)",
+            },
+            {
+                "<leader>cs",
+                "<cmd>Trouble symbols toggle focus=false<cr>",
+                desc = "Symbols (Trouble)",
+            },
+            {
+                "<leader>cl",
+                "<cmd>Trouble lsp toggle focus=false win.position=right<cr>",
+                desc = "LSP Definitions / references / ... (Trouble)",
+            },
+            {
+                "<leader>xL",
+                "<cmd>Trouble loclist toggle<cr>",
+                desc = "Location List (Trouble)",
+            },
+            {
+                "<leader>xQ",
+                "<cmd>Trouble qflist toggle<cr>",
+                desc = "Quickfix List (Trouble)",
+            },
+        },
+    },
+    {
+        "neovim/nvim-lspconfig",
+        config = function()
+            lsps = {'lsp_lua', 'wgsl_analyzer'}
+
+            for _i, value in ipairs(lsps) do
+                vim.lsp.enable(value)
+            end
+
+            vim.api.nvim_create_autocmd("FileType", {
+                pattern = "wgsl",
+                callback = function()
+                    vim.bo.commentstring = "// %s"
+                end
+            })
+        end
+    },
+    {
         'MagicDuck/grug-far.nvim',
         -- Note (lazy loading): grug-far.lua defers all it's requires so it's lazy by default
         -- additional lazy config to defer loading is not really needed...
@@ -42,11 +96,12 @@ return {
     },
     {
         "ibhagwan/fzf-lua",
-        dependencies = { "nvim-tree/nvim-web-devicons" },
+        dependencies = { "nvim-tree/nvim-web-devicons", "folke/trouble.nvim" },
         keys = {
             -- The "Big 4" equivalents
             { "<leader>ff", "<cmd>FzfLua files<cr>", desc = "Find Files" },
-            { "<leader>fg", "<cmd>FzfLua live_grep<cr>", desc = "Live Grep (Project)" },
+            { "<leader>fg", "<cmd>FzfLua live_grep_native<cr>", desc = "Live Grep (Project)" },
+            { "<leader>fi", "<cmd>FzfLua lgrep_curbuf<cr>", desc = "Live Grep (File)" },
             { "<leader>fb", "<cmd>FzfLua buffers<cr>", desc = "Buffers" },
             { "<leader>fh", "<cmd>FzfLua help_tags<cr>", desc = "Help Tags" },
             -- Bonus: Resume last search (super useful)
@@ -66,7 +121,12 @@ return {
                     ["<C-u>"] = "preview-page-up",
                 },
             },
-        }
+        },
+        config = function ()
+            local config = require("fzf-lua.config")
+            local actions = require("trouble.sources.fzf").actions
+            config.defaults.actions.files["ctrl-t"] = actions.open
+        end
     },
     { "folke/neoconf.nvim", cmd = "Neoconf" },
     {
@@ -105,7 +165,37 @@ return {
         'mrcjkb/rustaceanvim',
         version = '^6', -- Recommended
         lazy = false, -- This plugin is already lazy
-        dependencies = 'mfussenegger/nvim-dap'
+        dependencies = 'mfussenegger/nvim-dap',
+        config = function ()
+            vim.g.rustaceanvim = {
+                -- Plugin configuration
+                tools = {
+                },
+                -- LSP configuration
+                server = {
+                    ['init_options'] = {
+                        rustfmt = {
+                            rangeFormatting = {
+                                enable = true,
+                            },
+                        },
+                    },
+                    settings = {
+                        -- rust-analyzer language server configuration
+                        ['rust-analyzer'] = {
+                            rustfmt = {
+                                rangeFormatting = {
+                                    enable = true
+                                }
+                            }
+                        },
+                    },
+                },
+                -- DAP configuration
+                dap = {
+                },
+            }
+        end
     },
     {
         'nvim-treesitter/nvim-treesitter',
@@ -134,31 +224,32 @@ return {
         dependencies = { 'nvim-treesitter/nvim-treesitter' },
         opts = {
             ensure_installed = {
+                "rust",
+                "wgsl",
+                "toml",
+                "json",
+                "lua",
+                "markdown",
+                "markdown_inline",
                 "bash",
                 "c",
                 "diff",
                 "html",
                 "javascript",
                 "jsdoc",
-                "json",
                 "jsonc",
-                "lua",
                 "luadoc",
                 "luap",
-                "markdown",
-                "markdown_inline",
                 "printf",
                 "python",
                 "query",
                 "regex",
-                "toml",
                 "tsx",
                 "typescript",
                 "vim",
                 "vimdoc",
                 "xml",
                 "yaml",
-                "rust"
             },
             fold = { enable = true },
             highlight = { enable = true },
