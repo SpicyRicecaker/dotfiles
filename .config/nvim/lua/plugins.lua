@@ -1,6 +1,33 @@
 return {
-    "folke/lazydev.nvim",
+    -- "folke/lazydev.nvim",
     "folke/which-key.nvim",
+    {
+        "jake-stewart/multicursor.nvim",
+        branch = "1.0",
+        config = function()
+            local mc = require("multicursor-nvim")
+            mc.setup()
+	    local set = vim.keymap.set
+
+            set("n", "<c-leftmouse>", mc.handleMouse)
+            set("n", "<c-leftdrag>", mc.handleMouseDrag)
+            set("n", "<c-leftrelease>", mc.handleMouseRelease)
+        end
+    },
+    -- { 
+    --     "HiPhish/rainbow-delimiters.nvim",
+    --     config = function ()
+    --         vim.cmd"colorscheme unokai"
+    --         vim.cmd"highlight! link RainbowDelimiterRed markdownH1Delimiter"
+    --         vim.cmd"highlight! link RainbowDelimiterOrange markdownH3Delimiter"
+    --         vim.cmd"highlight! link RainbowDelimiterYellow markdownH2Delimiter"
+    --         vim.cmd"highlight! link RainbowDelimiterGreen  markdownH6Delimiter"
+    --         vim.cmd"highlight! link RainbowDelimiterCyan markdownH5Delimiter"
+    --         vim.cmd"highlight! link RainbowDelimiterBlue markdownH4Delimiter"
+    --         vim.cmd"highlight! link RainbowDelimiterViolet Constant"
+    --         vim.cmd"highlight! link MatchParen htmlBold"
+    --     end
+    -- },
     {
         "folke/trouble.nvim",
         opts = {}, -- for default options, refer to the configuration section for custom setup.
@@ -85,8 +112,11 @@ return {
     {'kevinhwang91/nvim-ufo',
         dependencies = 'kevinhwang91/promise-async',
         config = function () 
-            vim.keymap.set('n', 'zR', require('ufo').openAllFolds)
-            vim.keymap.set('n', 'zM', require('ufo').closeAllFolds)
+            local u = require'ufo'
+            vim.keymap.set('n', 'zR', u.openAllFolds)
+            vim.keymap.set('n', 'zM', u.closeAllFolds)
+            vim.keymap.set('n', 'zr', u.openFoldsExceptKinds)
+            vim.keymap.set('n', 'zm', u.closeFoldsWith)
             require('ufo').setup({
                 provider_selector = function(bufnr, filetype, buftype)
                     return {'treesitter', 'indent'}
@@ -106,6 +136,11 @@ return {
             { "<leader>fh", "<cmd>FzfLua help_tags<cr>", desc = "Help Tags" },
             -- Bonus: Resume last search (super useful)
             { "<leader>fr", "<cmd>FzfLua resume<cr>", desc = "Resume Last Search" },
+            { "<leader>fj", "<cmd>FzfLua jumps<cr>", desc = "Jumps" },
+            { "<leader>fk", "<cmd>FzfLua keymaps<cr>", desc = "Keymaps" },
+            { "<leader>fc", "<cmd>FzfLua command_history<cr>", desc = "Command History" },
+            { "<leader>fu", "<cmd>FzfLua undo_tree<cr>", desc = "Undo Tree" },
+            { "<leader>fH", "<cmd>FzfLua highlights<cr>", desc = "Highlights" },
         },
         opts = {
             -- This makes the previewer look/feel like Telescope
@@ -148,6 +183,21 @@ return {
         version = false,
         config = function ()
             require('mini.completion').setup()
+            require('mini.surround').setup({
+                mappings = {
+                    add = '<leader>sa',
+                    delete = '<leader>sd',
+                    find = '<leader>sf',
+                    find_left = '<leader>sF',
+                    highlight = '<leader>sh',
+                    replace = '<leader>sr',
+
+                    -- Add this only if you don't want to use extended mappings
+                    suffix_last = '',
+                    suffix_next = '',
+                },
+                search_method = 'cover_or_next',
+            })
             -- require('mini.pick').setup()
             -- vim.keymap.set('n', '<leader>ff', MiniPick.builtin.files, { desc = 'mini.pick files' })
             -- vim.keymap.set('n', '<leader>fg', MiniPick.builtin.grep, { desc = 'mini.pick grep' })
@@ -223,44 +273,21 @@ return {
         'MeanderingProgrammer/treesitter-modules.nvim',
         dependencies = { 'nvim-treesitter/nvim-treesitter' },
         opts = {
-            ensure_installed = {
-                "rust",
-                "wgsl",
-                "toml",
-                "json",
-                "lua",
-                "markdown",
-                "markdown_inline",
-                "bash",
-                "c",
-                "diff",
-                "html",
-                "javascript",
-                "jsdoc",
-                "jsonc",
-                "luadoc",
-                "luap",
-                "printf",
-                "python",
-                "query",
-                "regex",
-                "tsx",
-                "typescript",
-                "vim",
-                "vimdoc",
-                "xml",
-                "yaml",
-            },
+            ensure_installed = { "rust", "wgsl", "toml", "json", "lua", "markdown", "markdown_inline", "bash", "c", "diff", "html", "javascript", "jsdoc", "jsonc", "luadoc", "luap", "printf", "python", "query", "regex", "tsx", "typescript", "vim", "vimdoc", "xml", "yaml" },
             fold = { enable = true },
             highlight = { enable = true },
             indent = { enable = true },
             incremental_selection = { 
                 enable = true,
                 keymaps = {
-                    init_selection = 'gnn',
-                    scope_incremental = 'gnn',
-                    node_incremental = 'gni',
-                    node_decremental = 'gnd',
+                    init_selection = "<A-o>",
+                    node_incremental = "<A-o>",
+                    scope_incremental = "<A-O>",
+                    node_decremental = "<A-i>",
+                    -- init_selection = 'gnn',
+                    -- scope_incremental = 'gnn',
+                    -- node_incremental = 'gni',
+                    -- node_decremental = 'gnd',
                 },
             },
         },
@@ -268,7 +295,16 @@ return {
     {
         'max397574/better-escape.nvim',
         config = function()
-            require'better_escape'.setup()
-        end,
-    },
+            require'better_escape'.setup {
+                default_mappings = false,
+                mappings = {
+                    -- make sure not to include visual mode here
+                    i = { j = { k = "<Esc>", j = "<Esc>", }, },
+                    c = { j = { k = "<C-c>", j = "<C-c>", }, },
+                    t = { j = { k = "<C-\\><C-n>" } },
+                    s = { j = { k = "<Esc>" } }
+                }
+            }
+        end
+    }
 }
