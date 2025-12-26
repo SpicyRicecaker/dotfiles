@@ -139,7 +139,7 @@ return {
             { "<leader>fj", "<cmd>FzfLua jumps<cr>", desc = "Jumps" },
             { "<leader>fk", "<cmd>FzfLua keymaps<cr>", desc = "Keymaps" },
             { "<leader>fc", "<cmd>FzfLua command_history<cr>", desc = "Command History" },
-            { "<leader>fu", "<cmd>FzfLua undo_tree<cr>", desc = "Undo Tree" },
+            { "<leader>fu", "<cmd>FzfLua undotree<cr>", desc = "Undo Tree" },
             { "<leader>fH", "<cmd>FzfLua highlights<cr>", desc = "Highlights" },
         },
         opts = {
@@ -198,6 +198,7 @@ return {
                 },
                 search_method = 'cover_or_next',
             })
+            require('mini.test').setup()
             -- require('mini.pick').setup()
             -- vim.keymap.set('n', '<leader>ff', MiniPick.builtin.files, { desc = 'mini.pick files' })
             -- vim.keymap.set('n', '<leader>fg', MiniPick.builtin.grep, { desc = 'mini.pick grep' })

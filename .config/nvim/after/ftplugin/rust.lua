@@ -1,4 +1,5 @@
 local bufnr = vim.api.nvim_get_current_buf()
+print("bufnr is " .. bufnr)
 vim.keymap.set(
   "n",
   "<leader>a",
@@ -36,3 +37,11 @@ vim.keymap.set(
   end,
   { silent = true, buffer = bufnr }
 )
+
+vim.keymap.set('n', '67', function () vim.fn.system("kittles --adjacent -c 'cargo run'") end,
+    { silent = true, buffer = bufnr }
+)
+vim.keymap.set('n', '45', function () vim.fn.system("kittles --adjacent --dont-take-focus -c 'cargo run'") end,
+    { silent = true, buffer = bufnr }
+)
+

@@ -32,8 +32,8 @@ vim.api.nvim_set_keymap('i', '<C-k>', '<Esc>lC', { noremap = true })
 vim.api.nvim_set_keymap('i', '<D-d>', '<Esc>:w<cr>a', { noremap = true })
 vim.api.nvim_set_keymap('n', '<D-d>', ':w<cr>', { noremap = true })
 
-vim.keymap.set('n', '67', function () vim.fn.system("kitty-cargo-task") end)
-vim.keymap.set('n', '45', function () vim.fn.system("kitty-cargo-task --dont-take-focus") end)
+vim.keymap.set('n', '67', function () vim.fn.system("kittles --adjacent -c 'cargo run'") end)
+vim.keymap.set('n', '45', function () vim.fn.system("kittles --adjacent --dont-take-focus -c 'cargo run'") end)
 
 vim.keymap.set('i', '<D-k>', ':<esc>q<cr>')
 vim.keymap.set('n', '<D-k>', ':q<cr>')
@@ -47,10 +47,16 @@ vim.keymap.set({ 'n', 'v' }, '<leader>o', function()
 end, { desc = 'LSP: Format [f]ile or selection' })
 
 vim.keymap.set('n', 'gd', vim.lsp.buf.definition, opts)
-vim.keymap.set('n', 'gi', vim.lsp.buf.implementation, opts)
+vim.keymap.set('n', 'gu', vim.lsp.buf.implementation, opts)
 
 vim.keymap.set("n", "<F8>", function () vim.diagnostic.jump{count=1, float=true} end)
 vim.keymap.set("n", "<F20>", function () vim.diagnostic.jump{count=-1, float=true} end)
 
 -- Toggle the "VS Code Error List"
 vim.keymap.set("n", "<leader>xx", "<cmd>Trouble diagnostics toggle<cr>", { desc = "Diagnostics (Trouble)" })
+
+function myprint ()
+    vim.cmd'luafile %'
+    local v = vim.cmd'echo &foldlevel'
+    print(v)
+end

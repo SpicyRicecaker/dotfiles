@@ -21,7 +21,8 @@ setopt SHARE_HISTORY
 PROMPT='%~%f '
 
 # -- MODS --
-EDITOR="nvim"
+export EDITOR="nvim"
+export SUDO_EDITOR="nvim"
 C="~/.config"
 alias dg="git --git-dir='$HOME/dotfiles.git' --work-tree='$HOME'" # dotfiles git
 alias ls="eza" # ls
