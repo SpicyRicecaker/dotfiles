@@ -24,7 +24,7 @@ PROMPT='%~%f '
 # -- MODS --
 export EDITOR="nvim"
 export SUDO_EDITOR="nvim"
-C="~/.config"
+C="~/dotfiles/.config"
 alias dg="git --git-dir='$HOME/dotfiles.git' --work-tree='$HOME'" # dotfiles git
 alias ls="eza" # ls
 alias n="nvim" # neovim
@@ -34,6 +34,7 @@ alias sc="n ~/.skhdrc" # edit skhdrc config
 alias z="n ~/.zshrc" # edit zsh config
 alias kc="pushd $C/kitty && n ./kitty.conf && popd" # edit kitty config
 alias g="cd ~/git/folding-with-yuu && nvim ."
+alias s="pushd ~/dotfiles && stow . && popd"
 
 # bun completions
 [ -s "/Users/oliver/.bun/_bun" ] && source "/Users/oliver/.bun/_bun"
