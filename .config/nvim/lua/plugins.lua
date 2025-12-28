@@ -1,8 +1,7 @@
 return {
     -- "folke/lazydev.nvim",
     "folke/which-key.nvim",
-    {
-        "jake-stewart/multicursor.nvim",
+    { "jake-stewart/multicursor.nvim",
         branch = "1.0",
         config = function()
             local mc = require("multicursor-nvim")
@@ -28,8 +27,7 @@ return {
     --         vim.cmd"highlight! link MatchParen htmlBold"
     --     end
     -- },
-    {
-        "folke/trouble.nvim",
+    { "folke/trouble.nvim",
         opts = {}, -- for default options, refer to the configuration section for custom setup.
         cmd = "Trouble",
         keys = {
@@ -65,8 +63,7 @@ return {
             },
         },
     },
-    {
-        "neovim/nvim-lspconfig",
+    { "neovim/nvim-lspconfig",
         config = function()
             lsps = {'lsp_lua', 'wgsl_analyzer'}
 
@@ -82,8 +79,7 @@ return {
             })
         end
     },
-    {
-        'MagicDuck/grug-far.nvim',
+    { 'MagicDuck/grug-far.nvim',
         -- Note (lazy loading): grug-far.lua defers all it's requires so it's lazy by default
         -- additional lazy config to defer loading is not really needed...
         config = function()
@@ -95,8 +91,7 @@ return {
             });
         end
     },
-    {
-        'stevearc/oil.nvim',
+    { 'stevearc/oil.nvim',
         opts = {
             -- This is what replaces netrw
             default_file_explorer = true,
@@ -109,14 +104,32 @@ return {
         },
         dependencies = { "nvim-tree/nvim-web-devicons" },
     },
-    {'kevinhwang91/nvim-ufo',
+    { 'kevinhwang91/nvim-ufo',
         dependencies = 'kevinhwang91/promise-async',
         config = function () 
             local u = require'ufo'
             vim.keymap.set('n', 'zR', u.openAllFolds)
-            vim.keymap.set('n', 'zM', u.closeAllFolds)
-            vim.keymap.set('n', 'zr', u.openFoldsExceptKinds)
-            vim.keymap.set('n', 'zm', u.closeFoldsWith)
+            vim.keymap.set('n', 'zM', 
+                function ()
+                    vim.b.ufo_foldlevel = vim.b.ufo_foldlevel or 0
+                    vim.b.ufo_foldlevel = 0
+                    u.closeFoldsWith(vim.b.ufo_foldlevel)
+                end
+            )
+            vim.keymap.set('n', 'zr',
+                function ()
+                    vim.b.ufo_foldlevel = vim.b.ufo_foldlevel or 0
+                    vim.b.ufo_foldlevel = math.min(vim.b.ufo_foldlevel + 1, 99)
+                    u.closeFoldsWith(vim.b.ufo_foldlevel)
+                end
+            )
+            vim.keymap.set('n', 'zm',
+                function ()
+                    vim.b.ufo_foldlevel = vim.b.ufo_foldlevel or 0
+                    vim.b.ufo_foldlevel = math.max(0, vim.b.ufo_foldlevel - 1)
+                    u.closeFoldsWith(vim.b.ufo_foldlevel)
+                end
+            )
             require('ufo').setup({
                 provider_selector = function(bufnr, filetype, buftype)
                     return {'treesitter', 'indent'}
@@ -124,8 +137,7 @@ return {
             })
         end
     },
-    {
-        "ibhagwan/fzf-lua",
+    { "ibhagwan/fzf-lua",
         dependencies = { "nvim-tree/nvim-web-devicons", "folke/trouble.nvim" },
         keys = {
             -- The "Big 4" equivalents
@@ -164,8 +176,7 @@ return {
         end
     },
     { "folke/neoconf.nvim", cmd = "Neoconf" },
-    {
-      "folke/flash.nvim",
+    { "folke/flash.nvim",
       event = "VeryLazy",
       ---@type Flash.Config
       opts = {
@@ -212,8 +223,7 @@ return {
             vim.keymap.set("n", "<leader>b", function() dap.toggle_breakpoint() end)
         end
     },
-    {
-        'mrcjkb/rustaceanvim',
+    { 'mrcjkb/rustaceanvim',
         version = '^6', -- Recommended
         lazy = false, -- This plugin is already lazy
         dependencies = 'mfussenegger/nvim-dap',
@@ -248,8 +258,7 @@ return {
             }
         end
     },
-    {
-        'nvim-treesitter/nvim-treesitter',
+    { 'nvim-treesitter/nvim-treesitter',
         branch = "main",
         build = ':TSUpdate',
         -- config = function(_, opts)
@@ -270,8 +279,7 @@ return {
         -- vim.cmd[[au BufRead,BufNewFile *.wgsl set filetype=wgsl]]
         -- end
     },
-    {
-        'MeanderingProgrammer/treesitter-modules.nvim',
+    { 'MeanderingProgrammer/treesitter-modules.nvim',
         dependencies = { 'nvim-treesitter/nvim-treesitter' },
         opts = {
             ensure_installed = { "rust", "wgsl", "toml", "json", "lua", "markdown", "markdown_inline", "bash", "c", "diff", "html", "javascript", "jsdoc", "jsonc", "luadoc", "luap", "printf", "python", "query", "regex", "tsx", "typescript", "vim", "vimdoc", "xml", "yaml" },
@@ -293,8 +301,7 @@ return {
             },
         },
     },
-    {
-        'max397574/better-escape.nvim',
+    { 'max397574/better-escape.nvim',
         config = function()
             require'better_escape'.setup {
                 default_mappings = false,
