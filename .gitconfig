@@ -1,0 +1,20 @@
+[user]
+    email = awesomenessisgolden@gmail.com
+    name = SpicyRicecaker
+[core]
+    editor = nvim
+[alias]
+    aa = add -A
+    cm = commit
+    pu = push origin master
+[filter "lfs"]
+	clean = git-lfs clean -- %f
+	smudge = git-lfs smudge -- %f
+	process = git-lfs filter-process
+	required = true
+[merge]
+	conflictstyle = diff3
+[credential "https://github.com"]
+	helper = !/usr/bin/gh auth git-credential
+[credential "https://gist.github.com"]
+	helper = !/usr/bin/gh auth git-credential
