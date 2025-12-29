@@ -43,4 +43,4 @@ alias s="pushd ~/dotfiles && stow . && popd"
 # bun
 export BUN_INSTALL="$HOME/.bun"
 export PATH="$BUN_INSTALL/bin:$PATH"
-export PAGER="nvim +Man! -c 'setlocal scrolloff=999'"
+export PAGER="nvim +Man! -c 'setlocal scrolloff=999' -c 'norm M'"

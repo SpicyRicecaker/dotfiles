@@ -1,3 +1,4 @@
+vim.loader.enable()
 require("config.lazy")
 require("lazy").setup("plugins")
 vim.cmd("syntax off")
@@ -94,15 +95,24 @@ vim.keymap.set("n", "<F20>", function () vim.diagnostic.jump{count=-1, float=tru
 
 -- code modified from code by user fpohtmet
 -- @ https://www.reddit.com/r/neovim/comments/1ct96ab/comment/l4aw547/?utm_source=share&utm_medium=web3x&utm_name=web3xcss&utm_term=1&utm_content=share_button
-function toggle_scrolloff()
+function toggle_scrolloff (opt)
     -- determine whether we should toggle scrolloff on or off
-  local enable = vim.opt_local.scrolloff:get() == 0
+  local enable = opt and opt or (vim.opt_local.scrolloff:get() == 0)
     -- use lua last-statement to apply ternary operator
   vim.opt_local.scrolloff = enable and 999 or 0
 end
 
-vim.keymap.set("n", "<leader>c", toggle_scrolloff)
-vim.keymap.set("n", "<leader>e", function () vim.cmd"Oil" end)
+function toggle_view_man ()
+    local disabled = vim.opt_local.in_man:get() == 0
+    if disabled then
+        toggle_scrolloff(true)
+    else
+        toggle_scrolloff(false)
+    end
+    vim.opt_local.in_man = not disabled
+end
+
+vim.keymap.set("n", "<leader>c", toggle_view_man)
 
 -- Toggle the "VS Code Error List"
 vim.keymap.set("n", "<leader>xx", "<cmd>Trouble diagnostics toggle<cr>", { desc = "Diagnostics (Trouble)" })

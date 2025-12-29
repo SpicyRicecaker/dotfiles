@@ -103,6 +103,11 @@ return {
             },
         },
         dependencies = { "nvim-tree/nvim-web-devicons", "nvim-mini/mini.icons" },
+        config = function ()
+            require("oil").setup()
+            vim.keymap.set("n", "<leader>e", function () vim.cmd"Oil" end)
+        end,
+        lazy = false
     },
     { 'kevinhwang91/nvim-ufo',
         dependencies = 'kevinhwang91/promise-async',
