@@ -8,7 +8,7 @@ path+="$HOME/go/bin"
 eval "$(/opt/homebrew/bin/brew shellenv)"
 source "$HOME/.cargo/env"
 eval "$(zoxide init zsh --cmd cd)"
-# source <(fzf --zsh)
+source <(fzf --zsh)
 # eval "$(jenv init -)"
 
 # -- PREFERENCES --
@@ -32,6 +32,7 @@ alias nc="pushd $C/nvim && n ./lua/plugins.lua && popd" # edit neovim
 alias yc="n ~/.yabairc" # edit yabai config
 alias sc="n ~/.skhdrc" # edit skhdrc config
 alias z="n ~/.zshrc" # edit zsh config
+alias sz="source ~/.zshrc"
 alias kc="pushd $C/kitty && n ./kitty.conf && popd" # edit kitty config
 alias g="cd ~/git/folding-with-yuu && nvim ."
 alias s="pushd ~/dotfiles && stow . && popd"
@@ -42,4 +43,4 @@ alias s="pushd ~/dotfiles && stow . && popd"
 # bun
 export BUN_INSTALL="$HOME/.bun"
 export PATH="$BUN_INSTALL/bin:$PATH"
-
+export PAGER="nvim +Man! -c 'setlocal scrolloff=999'"

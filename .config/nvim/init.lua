@@ -92,6 +92,13 @@ vim.keymap.set('n', 'gu', vim.lsp.buf.implementation, opts)
 vim.keymap.set("n", "<F8>", function () vim.diagnostic.jump{count=1, float=true} end)
 vim.keymap.set("n", "<F20>", function () vim.diagnostic.jump{count=-1, float=true} end)
 
+function toggle_scrolloff()
+  local enable = vim.opt_local.scrolloff:get() == 0
+  vim.opt_local.scrolloff = enable and 999 or 0
+end
+
+vim.keymap.set("n", "<leader>c", toggle_scrolloff)
+
 -- Toggle the "VS Code Error List"
 vim.keymap.set("n", "<leader>xx", "<cmd>Trouble diagnostics toggle<cr>", { desc = "Diagnostics (Trouble)" })
 
@@ -100,4 +107,5 @@ function myprint ()
     local v = vim.cmd'echo &foldlevel'
     print(v)
 end
+
 
