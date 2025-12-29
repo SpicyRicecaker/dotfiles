@@ -1,18 +1,18 @@
 return {
     -- "folke/lazydev.nvim",
     "folke/which-key.nvim",
-    { "jake-stewart/multicursor.nvim",
-        branch = "1.0",
-        config = function()
-            local mc = require("multicursor-nvim")
-            mc.setup()
-	    local set = vim.keymap.set
-
-            set("n", "<c-leftmouse>", mc.handleMouse)
-            set("n", "<c-leftdrag>", mc.handleMouseDrag)
-            set("n", "<c-leftrelease>", mc.handleMouseRelease)
-        end
-    },
+    -- { "jake-stewart/multicursor.nvim",
+    --     branch = "1.0",
+    --     config = function()
+    --         local mc = require("multicursor-nvim")
+    --         mc.setup()
+    --  local set = vim.keymap.set
+    --
+    --         set("n", "<c-leftmouse>", mc.handleMouse)
+    --         set("n", "<c-leftdrag>", mc.handleMouseDrag)
+    --         set("n", "<c-leftrelease>", mc.handleMouseRelease)
+    --     end
+    -- },
     -- { 
     --     "HiPhish/rainbow-delimiters.nvim",
     --     config = function ()
@@ -102,7 +102,7 @@ return {
                 ["<leader>td"] = "actions.tcd",
             },
         },
-        dependencies = { "nvim-tree/nvim-web-devicons" },
+        dependencies = { "nvim-tree/nvim-web-devicons", "nvim-mini/mini.icons" },
     },
     { 'kevinhwang91/nvim-ufo',
         dependencies = 'kevinhwang91/promise-async',
@@ -175,7 +175,8 @@ return {
             config.defaults.actions.files["ctrl-t"] = actions.open
         end
     },
-    { "folke/neoconf.nvim", cmd = "Neoconf" },
+    { "folke/neoconf.nvim",
+        cmd = "Neoconf" },
     { "folke/flash.nvim",
       event = "VeryLazy",
       ---@type Flash.Config
@@ -193,6 +194,7 @@ return {
     { 'nvim-mini/mini.nvim',
         version = false,
         config = function ()
+            require('mini.snippets').setup()
             require('mini.completion').setup()
             require('mini.surround').setup({
                 mappings = {
@@ -215,7 +217,8 @@ return {
             -- vim.keymap.set('n', '<leader>fg', MiniPick.builtin.grep, { desc = 'mini.pick grep' })
             -- vim.keymap.set('n', '<leader>fb', MiniPick.builtin.buffers, { desc = 'mini.pick buffers' })
             -- vim.keymap.set('n', '<leader>fh', MiniPick.builtin.help, { desc = 'mini.pick help' })
-        end
+        end,
+        dependencies = { "nvim-mini/mini.icons" },
     },
     { 'mfussenegger/nvim-dap',
         config = function ()
