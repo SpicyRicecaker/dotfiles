@@ -122,7 +122,7 @@ function toggle_view_man ()
     vim.b.man_nav_enabled = vim.b.man_nav_enabled and vim.b.man_nav_enabled or false
     local target_man_nav_enabled = not vim.b.man_nav_enabled
     if target_man_nav_enabled then
-        vim.api.nvim_input('zz')
+        vim.api.nvim_input('M')
         keep_some_lines_visible_around_cursor(true)
         set_cursor_is_visible(false)
     else
@@ -132,7 +132,7 @@ function toggle_view_man ()
     vim.b.man_nav_enabled = target_man_nav_enabled
 end
 
-vim.keymap.set("n", "<leader>c", toggle_view_man, { silent = true, nowait = true })
+vim.keymap.set("n", "<leader>c", toggle_view_man, { desc = "Toggle Man Nav Mode", silent = true, nowait = true })
 
 -- Toggle the "VS Code Error List"
 vim.keymap.set("n", "<leader>xx", "<cmd>Trouble diagnostics toggle<cr>", { desc = "Diagnostics (Trouble)" })
