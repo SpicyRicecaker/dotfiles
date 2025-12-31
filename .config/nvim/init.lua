@@ -95,24 +95,44 @@ vim.keymap.set("n", "<F20>", function () vim.diagnostic.jump{count=-1, float=tru
 
 -- code modified from code by user fpohtmet
 -- @ https://www.reddit.com/r/neovim/comments/1ct96ab/comment/l4aw547/?utm_source=share&utm_medium=web3x&utm_name=web3xcss&utm_term=1&utm_content=share_button
-function toggle_scrolloff (opt)
-    -- determine whether we should toggle scrolloff on or off
-  local enable = opt and opt or (vim.opt_local.scrolloff:get() == 0)
-    -- use lua last-statement to apply ternary operator
-  vim.opt_local.scrolloff = enable and 999 or 0
+function keep_some_lines_visible_around_cursor (yes)
+    if yes then
+        vim.opt_local.scrolloff = 999
+    else
+        vim.opt_local.scrolloff = 0
+    end
+end
+
+function set_cursor_is_visible (visible)
+    if visible then
+        vim.cmd[["
+            hi Cursor blend=0
+            set guicursor=n-v-c-sm:block,i-ci-ve:ver25,r-cr-o:hor20,t:block-blinkon500-blinkoff500-TermCursor
+        "]]
+    else
+        vim.cmd[["
+            set termguicolors
+            hi Cursor blend=100
+            set guicursor+=a:Cursor/lCursor
+        "]]
+    end
 end
 
 function toggle_view_man ()
-    local disabled = vim.opt_local.in_man:get() == 0
-    if disabled then
-        toggle_scrolloff(true)
+    vim.b.man_nav_enabled = vim.b.man_nav_enabled and vim.b.man_nav_enabled or false
+    local target_man_nav_enabled = not vim.b.man_nav_enabled
+    if target_man_nav_enabled then
+        vim.api.nvim_input('zz')
+        keep_some_lines_visible_around_cursor(true)
+        set_cursor_is_visible(false)
     else
-        toggle_scrolloff(false)
+        keep_some_lines_visible_around_cursor(false)
+        set_cursor_is_visible(true)
     end
-    vim.opt_local.in_man = not disabled
+    vim.b.man_nav_enabled = target_man_nav_enabled
 end
 
-vim.keymap.set("n", "<leader>c", toggle_view_man)
+vim.keymap.set("n", "<leader>c", toggle_view_man, { silent = true, nowait = true })
 
 -- Toggle the "VS Code Error List"
 vim.keymap.set("n", "<leader>xx", "<cmd>Trouble diagnostics toggle<cr>", { desc = "Diagnostics (Trouble)" })

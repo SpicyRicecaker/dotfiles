@@ -1,6 +1,13 @@
 return {
     -- "folke/lazydev.nvim",
     "folke/which-key.nvim",
+    { "nvim-treesitter/nvim-treesitter-context",
+        config = function ()
+            vim.keymap.set("n", "[c", function()
+                require("treesitter-context").go_to_context(vim.v.count1)
+            end, { silent = true })
+        end
+    },
     -- { "jake-stewart/multicursor.nvim",
     --     branch = "1.0",
     --     config = function()

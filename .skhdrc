@@ -239,6 +239,8 @@ alt + cmd + shift - 0 : yabai -m window --space 10; yabai -m space --focus 10
 # focus recent space
 alt - tab : yabai -m space --focus recent
 
+# cmd - w : a
+
 # cmd - tab : nil
 # cmd - t : nil
 # alt - t : nil
