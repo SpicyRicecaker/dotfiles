@@ -19,8 +19,8 @@ vim.opt.foldmethod = "manual"
 vim.opt.signcolumn = "number"
 vim.opt.wrap = false
 
--- vim.api.nvim_set_keymap('i', '<C-f>', '<Right>', { noremap = true })
--- vim.api.nvim_set_keymap('i', '<C-b>', '<Left>', { noremap = true })
+vim.api.nvim_set_keymap('i', '<C-f>', '<Right>', { noremap = true })
+vim.api.nvim_set_keymap('i', '<C-b>', '<Left>', { noremap = true })
 vim.api.nvim_set_keymap('i', '<C-m-f>', '<S-Right>', { noremap = true })
 vim.api.nvim_set_keymap('i', '<C-m-b>', '<S-Left>', { noremap = true })
 vim.api.nvim_set_keymap('i', '<m-bs>', '<C-w>', { noremap = true })
@@ -35,12 +35,12 @@ vim.api.nvim_set_keymap('n', '<D-d>', ':w<cr>', { noremap = true })
 
 vim.keymap.set('n', '67', function () vim.fn.system("kittles --adjacent -c 'cargo run'") end)
 vim.keymap.set('n', '45', function () vim.fn.system("kittles --adjacent --dont-take-focus -c 'cargo run'") end)
-vim.keymap.set('n', '<leader>d',
-    function ()
-        local res = vim.cmd("!ls")
-        print(res)
-    end
-)
+-- vim.keymap.set('n', '<leader>d',
+--     function ()
+--         local res = vim.cmd("!ls")
+--         print(res)
+--     end
+-- )
 vim.keymap.set('n', '<leader>l',
     function ()
         local bufnr = vim.api.nvim_get_current_buf()
@@ -69,6 +69,7 @@ vim.keymap.set('n', '<leader>l',
         local hash = string.format([[pushd %s
 jj edit %s
 nvim %s -c "call cursor(%s,%s)"
+jj edit -r "latest(@::)"
 popd]], dir, id_commit, file_name, curloc[1], curloc[2])
 
         vim.fn.setreg("+", hash)
@@ -132,7 +133,7 @@ function toggle_view_man ()
     vim.b.man_nav_enabled = target_man_nav_enabled
 end
 
-vim.keymap.set("n", "<leader>c", toggle_view_man, { desc = "Toggle Man Nav Mode", silent = true, nowait = true })
+vim.keymap.set("n", "<leader>d", toggle_view_man, { desc = "Toggle Man Nav Mode", silent = true, nowait = true })
 
 -- Toggle the "VS Code Error List"
 vim.keymap.set("n", "<leader>xx", "<cmd>Trouble diagnostics toggle<cr>", { desc = "Diagnostics (Trouble)" })

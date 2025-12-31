@@ -9,6 +9,7 @@ eval "$(/opt/homebrew/bin/brew shellenv)"
 source "$HOME/.cargo/env"
 eval "$(zoxide init zsh --cmd cd)"
 source <(fzf --zsh)
+eval "$(~/.local/bin/mise activate zsh)"
 # eval "$(jenv init -)"
 
 # -- PREFERENCES --

@@ -205,9 +205,15 @@ return {
     },
     { 'nvim-mini/mini.nvim',
         version = false,
+        dependencies = { "nvim-mini/mini.icons" },
         config = function ()
             require('mini.snippets').setup()
-            require('mini.completion').setup()
+            require('mini.completion').setup({
+                mappings = {
+                    scroll_down = '',
+                    scroll_up = '',
+                }
+            })
             require('mini.surround').setup({
                 mappings = {
                     add = '<leader>sa',
@@ -230,7 +236,6 @@ return {
             -- vim.keymap.set('n', '<leader>fb', MiniPick.builtin.buffers, { desc = 'mini.pick buffers' })
             -- vim.keymap.set('n', '<leader>fh', MiniPick.builtin.help, { desc = 'mini.pick help' })
         end,
-        dependencies = { "nvim-mini/mini.icons" },
     },
     { 'mfussenegger/nvim-dap',
         config = function ()
