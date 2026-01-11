@@ -37,6 +37,15 @@ alias sz="source ~/.zshrc"
 alias kc="pushd $C/kitty && n ./kitty.conf && popd" # edit kitty config
 alias g="cd ~/git/folding-with-yuu && nvim ."
 alias s="pushd ~/dotfiles && stow . && popd"
+alias mc="n $C/mpv/mpv.conf"
+alias i="kitty icat --scale-up"
+alias c="cargo run"
+alias r="cargo run --release"
+T="~/Downloads/trash"
+U="/Volumes/USBUSB"
+UB="~/Downloads/USBUSBCOPY"
+alias uc="pushd $U && n . && popd"
+alias us="mv $UB $T && cp -r $U $UB"
 
 # bun completions
 [ -s "/Users/oliver/.bun/_bun" ] && source "/Users/oliver/.bun/_bun"

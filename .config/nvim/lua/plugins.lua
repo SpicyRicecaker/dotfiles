@@ -1,4 +1,61 @@
 return {
+    { 'saghen/blink.cmp',
+        -- optional: provides snippets for the snippet source
+        dependencies = { 'rafamadriz/friendly-snippets' },
+
+        -- use a release tag to download pre-built binaries
+        version = '1.*',
+        -- AND/OR build from source, requires nightly: https://rust-lang.github.io/rustup/concepts/channels.html#working-with-nightly-rust
+        -- build = 'cargo build --release',
+        -- If you use nix, you can build from source using latest nightly rust with:
+        -- build = 'nix run .#build-plugin',
+
+        ---@module 'blink.cmp'
+        ---@type blink.cmp.Config
+        opts = {
+            -- 'default' (recommended) for mappings similar to built-in completions (C-y to accept)
+            -- 'super-tab' for mappings similar to vscode (tab to accept)
+            -- 'enter' for enter to accept
+            -- 'none' for no mappings
+            --
+            -- All presets have the following mappings:
+            -- C-space: Open menu or open docs if already open
+            -- C-n/C-p or Up/Down: Select next/previous item
+            -- C-e: Hide menu
+            -- C-k: Toggle signature help (if signature.enabled = true)
+            --
+            -- See :h blink-cmp-config-keymap for defining your own keymap
+            keymap = { 
+                preset = 'default',
+                ['<C-l>'] = { 'show_signature', 'hide_signature', 'fallback' }
+            },
+
+            appearance = {
+                -- 'mono' (default) for 'Nerd Font Mono' or 'normal' for 'Nerd Font'
+                -- Adjusts spacing to ensure icons are aligned
+                nerd_font_variant = 'mono'
+            },
+
+            -- (Default) Only show the documentation popup when manually triggered
+            completion = { 
+                menu = { auto_show = false },
+                documentation = { auto_show = false }
+            },
+            -- Default list of enabled providers defined so that you can extend it
+            -- elsewhere in your config, without redefining it, due to `opts_extend`
+            sources = {
+                default = { 'lsp', 'path', 'snippets', 'buffer' },
+            },
+
+            -- (Default) Rust fuzzy matcher for typo resistance and significantly better performance
+            -- You may use a lua implementation instead by using `implementation = "lua"` or fallback to the lua implementation,
+            -- when the Rust fuzzy matcher is not available, by using `implementation = "prefer_rust"`
+            --
+            -- See the fuzzy documentation for more information
+            fuzzy = { implementation = "prefer_rust_with_warning" }
+        },
+        opts_extend = { "sources.default" }
+    },
     -- "folke/lazydev.nvim",
     "folke/which-key.nvim",
     { "nvim-treesitter/nvim-treesitter-context",
@@ -94,6 +151,7 @@ return {
             -- alternatively you can set options with vim.g.grug_far = { ... }
             require('grug-far').setup({
                 -- options, see Configuration section below
+                vim.keymap.set("n", "<leader>g", function () vim.cmd"GrugFar" end)
                 -- there are no required options atm
             });
         end
@@ -119,6 +177,7 @@ return {
     { 'kevinhwang91/nvim-ufo',
         dependencies = 'kevinhwang91/promise-async',
         config = function () 
+
             local u = require'ufo'
             vim.keymap.set('n', 'zR', u.openAllFolds)
             vim.keymap.set('n', 'zM', 
@@ -142,10 +201,41 @@ return {
                     u.closeFoldsWith(vim.b.ufo_foldlevel)
                 end
             )
+
+            local handler = function(virtText, lnum, endLnum, width, truncate)
+                local newVirtText = {}
+                local suffix = (' 󰁂 %d '):format(endLnum - lnum)
+                local sufWidth = vim.fn.strdisplaywidth(suffix)
+                local targetWidth = width - sufWidth
+                local curWidth = 0
+                for _, chunk in ipairs(virtText) do
+                    local chunkText = chunk[1]
+                    local chunkWidth = vim.fn.strdisplaywidth(chunkText)
+                    if targetWidth > curWidth + chunkWidth then
+                        table.insert(newVirtText, chunk)
+                    else
+                        chunkText = truncate(chunkText, targetWidth - curWidth)
+                        local hlGroup = chunk[2]
+                        table.insert(newVirtText, {chunkText, hlGroup})
+                        chunkWidth = vim.fn.strdisplaywidth(chunkText)
+                        -- str width returned from truncate() may less than 2nd argument, need padding
+                        if curWidth + chunkWidth < targetWidth then
+                            suffix = suffix .. (' '):rep(targetWidth - curWidth - chunkWidth)
+                        end
+                        break
+                    end
+                    curWidth = curWidth + chunkWidth
+                end
+                table.insert(newVirtText, {suffix, ''})
+                return newVirtText
+            end
+
             require('ufo').setup({
+                open_fold_hl_timeout = 0,
                 provider_selector = function(bufnr, filetype, buftype)
                     return {'treesitter', 'indent'}
-                end
+                end,
+                -- fold_virt_text_handler = handler
             })
         end
     },
@@ -165,6 +255,7 @@ return {
             { "<leader>fc", "<cmd>FzfLua command_history<cr>", desc = "Command History" },
             { "<leader>fu", "<cmd>FzfLua undotree<cr>", desc = "Undo Tree" },
             { "<leader>fH", "<cmd>FzfLua highlights<cr>", desc = "Highlights" },
+            { "<leader>fm", "<cmd>FzfLua marks<cr>", desc = "Marks" },
         },
         opts = {
             -- This makes the previewer look/feel like Telescope
@@ -190,30 +281,30 @@ return {
     { "folke/neoconf.nvim",
         cmd = "Neoconf" },
     { "folke/flash.nvim",
-      event = "VeryLazy",
-      ---@type Flash.Config
-      opts = {
-        search = { enabled = true }
-      },
-      keys = {
-        { "s", mode = { "n", "x", "o" }, function() require("flash").jump() end, desc = "Flash" },
-        { "S", mode = { "n", "x", "o" }, function() require("flash").treesitter() end, desc = "Flash Treesitter" },
-        { "r", mode = "o", function() require("flash").remote() end, desc = "Remote Flash" },
-        { "R", mode = { "o", "x" }, function() require("flash").treesitter_search() end, desc = "Treesitter Search" },
-        { "<c-s>", mode = { "c" }, function() require("flash").toggle() end, desc = "Toggle Flash Search" },
-      },
+        event = "VeryLazy",
+        ---@type Flash.Config
+        opts = {
+            search = { enabled = true }
+        },
+        keys = {
+            { "s", mode = { "n", "x", "o" }, function() require("flash").jump() end, desc = "Flash" },
+            { "S", mode = { "n", "x", "o" }, function() require("flash").treesitter() end, desc = "Flash Treesitter" },
+            { "r", mode = "o", function() require("flash").remote() end, desc = "Remote Flash" },
+            { "R", mode = { "o", "x" }, function() require("flash").treesitter_search() end, desc = "Treesitter Search" },
+            { "<c-s>", mode = { "c" }, function() require("flash").toggle() end, desc = "Toggle Flash Search" },
+        },
     },
     { 'nvim-mini/mini.nvim',
         version = false,
         dependencies = { "nvim-mini/mini.icons" },
         config = function ()
-            require('mini.snippets').setup()
-            require('mini.completion').setup({
-                mappings = {
-                    scroll_down = '',
-                    scroll_up = '',
-                }
-            })
+            -- require('mini.snippets').setup()
+            -- require('mini.completion').setup({
+            --     mappings = {
+            --         scroll_down = '',
+            --         scroll_up = '',
+            --     }
+            -- })
             require('mini.surround').setup({
                 mappings = {
                     add = '<leader>sa',
@@ -302,7 +393,7 @@ return {
     { 'MeanderingProgrammer/treesitter-modules.nvim',
         dependencies = { 'nvim-treesitter/nvim-treesitter' },
         opts = {
-            ensure_installed = { "rust", "wgsl", "toml", "json", "lua", "markdown", "markdown_inline", "bash", "c", "diff", "html", "javascript", "jsdoc", "jsonc", "luadoc", "luap", "printf", "python", "query", "regex", "tsx", "typescript", "vim", "vimdoc", "xml", "yaml" },
+            ensure_installed = { "rust", "wgsl", "toml", "json", "lua", "markdown", "markdown_inline", "bash", "c", "diff", "html", "javascript", "jsdoc", "luadoc", "luap", "printf", "python", "query", "regex", "tsx", "typescript", "vim", "vimdoc", "xml", "yaml" },
             fold = { enable = true },
             highlight = { enable = true },
             indent = { enable = true },

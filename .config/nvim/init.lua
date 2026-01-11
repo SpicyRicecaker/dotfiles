@@ -34,6 +34,7 @@ vim.api.nvim_set_keymap('i', '<D-d>', '<Esc>:w<cr>a', { noremap = true })
 vim.api.nvim_set_keymap('n', '<D-d>', ':w<cr>', { noremap = true })
 
 vim.keymap.set('n', '67', function () vim.fn.system("kittles --adjacent -c 'cargo run'") end)
+vim.keymap.set('n', '78', function () vim.fn.system("kittles --adjacent -c 'cargo run --release'") end)
 vim.keymap.set('n', '45', function () vim.fn.system("kittles --adjacent --dont-take-focus -c 'cargo run'") end)
 -- vim.keymap.set('n', '<leader>d',
 --     function ()

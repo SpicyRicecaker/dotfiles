@@ -19,7 +19,7 @@ vim.keymap.set(
 
 vim.keymap.set(
   "n",
-  "<leader>g",
+  "<leader>R",
   function()
     vim.cmd.RustLsp('debug') -- supports rust-analyzer's grouping
     -- or vim.lsp.buf.codeAction() if you don't want grouping.
@@ -38,6 +38,9 @@ vim.keymap.set(
 )
 
 vim.keymap.set('n', '67', function () vim.fn.system("kittles --adjacent -c 'cargo run'") end,
+    { silent = true, buffer = bufnr }
+)
+vim.keymap.set('n', '78', function () vim.fn.system("kittles --adjacent -c 'cargo run --release'") end,
     { silent = true, buffer = bufnr }
 )
 vim.keymap.set('n', '45', function () vim.fn.system("kittles --adjacent --dont-take-focus -c 'cargo run'") end,
