@@ -4,6 +4,9 @@ require("lazy").setup("plugins")
 vim.cmd("syntax off")
 -- vim.api.nvim_set_hl(0, '@lsp.type.function', {})
 -- vim.cmd("colorscheme unokai")
+--
+-- disable diagnostics
+vim.diagnostic.enable(false)
 
 vim.g.mapleader = ' '
 vim.o.expandtab = true
@@ -31,11 +34,57 @@ vim.api.nvim_set_keymap('i', '<C-e>', '<End>', { noremap = true })
 vim.api.nvim_set_keymap('i', '<D-v>', '<C-r>+', { noremap = true })
 vim.api.nvim_set_keymap('i', '<C-k>', '<Esc>lC', { noremap = true })
 vim.api.nvim_set_keymap('i', '<D-d>', '<Esc>:w<cr>a', { noremap = true })
+vim.api.nvim_set_keymap('n', '\\x1b[13339;9u', '<Esc>:w<cr>a', { noremap = true })
 vim.api.nvim_set_keymap('n', '<D-d>', ':w<cr>', { noremap = true })
+vim.api.nvim_set_keymap('i', '<D-x>', '<Esc>dda', { noremap = true })
 
-vim.keymap.set('n', '67', function () vim.fn.system("kittles --adjacent -c 'cargo run'") end)
-vim.keymap.set('n', '78', function () vim.fn.system("kittles --adjacent -c 'cargo run --release'") end)
-vim.keymap.set('n', '45', function () vim.fn.system("kittles --adjacent --dont-take-focus -c 'cargo run'") end)
+-- vim.api.nvim_set_keymap('n', '<m-k>', '-', { noremap = true })
+-- vim.api.nvim_set_keymap('n', '<m-j>', '+', { noremap = true })
+vim.api.nvim_set_keymap('n', '<C-j>', '<C-w>j', { noremap = true })
+vim.api.nvim_set_keymap('n', '<C-k>', '<C-w>k', { noremap = true })
+vim.api.nvim_set_keymap('n', '<C-h>', '<C-w>h', { noremap = true })
+vim.api.nvim_set_keymap('n', '<C-l>', '<C-w>l', { noremap = true })
+
+vim.api.nvim_set_keymap('n', '<C-m-j>', '<C-w>s<C-w>j', { noremap = true })
+vim.api.nvim_set_keymap('n', '<C-m-k>', '<C-w>s', { noremap = true })
+vim.api.nvim_set_keymap('n', '<C-m-h>', '<C-w>v', { noremap = true })
+vim.api.nvim_set_keymap('n', '<C-m-l>', '<C-w>v<C-w>l', { noremap = true })
+
+vim.api.nvim_set_keymap('v', 'y', 'myymY`y', { noremap = true })
+
+vim.keymap.set('i', '<C-j>', function () vim.cmd('wincmd j') end, { noremap = true })
+vim.keymap.set('i', '<C-k>', function () vim.cmd('wincmd k') end, { noremap = true })
+vim.keymap.set('i', '<C-h>', function () vim.cmd('wincmd h') end, { noremap = true })
+vim.keymap.set('i', '<C-l>', function () vim.cmd('wincmd l') end, { noremap = true })
+
+vim.keymap.set('i', '<C-m-j>', function () vim.cmd('wincmd s'); vim.cmd('wincmd j') end, { noremap = true })
+vim.keymap.set('i', '<C-m-k>', function () vim.cmd('wincmd s') end, { noremap = true })
+vim.keymap.set('i', '<C-m-h>', function () vim.cmd('wincmd v') end, { noremap = true })
+vim.keymap.set('i', '<C-m-l>', function () vim.cmd('wincmd v'); vim.cmd('wincmd l') end, { noremap = true })
+
+function save_then_run (f)
+    vim.cmd'wa'
+    f()
+end
+
+vim.keymap.set('n', '67', function () 
+    save_then_run(
+        function () vim.fn.system("kittles --adjacent -c 'cargo run'") end
+    ) 
+end)
+
+vim.keymap.set('n', '78', function () 
+    save_then_run(
+        function () vim.fn.system("kittles --adjacent -c 'cargo run --release'") end
+    ) 
+end)
+
+vim.keymap.set('n', '34', function () 
+    save_then_run(
+        function () vim.fn.system("kittles --adjacent --dont-take-focus -c 'cargo run'") end
+    ) 
+end)
+
 -- vim.keymap.set('n', '<leader>d',
 --     function ()
 --         local res = vim.cmd("!ls")

@@ -7,7 +7,6 @@ return {
         version = '1.*',
         -- AND/OR build from source, requires nightly: https://rust-lang.github.io/rustup/concepts/channels.html#working-with-nightly-rust
         -- build = 'cargo build --release',
-        -- If you use nix, you can build from source using latest nightly rust with:
         -- build = 'nix run .#build-plugin',
 
         ---@module 'blink.cmp'
@@ -91,6 +90,7 @@ return {
     --         vim.cmd"highlight! link MatchParen htmlBold"
     --     end
     -- },
+    { "gbprod/yanky.nvim" },
     { "folke/trouble.nvim",
         opts = {}, -- for default options, refer to the configuration section for custom setup.
         cmd = "Trouble",
@@ -321,6 +321,16 @@ return {
                 search_method = 'cover_or_next',
             })
             require('mini.test').setup()
+            require('mini.ai').setup()
+
+            local spec_pair = require('mini.ai').gen_spec.pair
+            vim.b.miniai_config = {
+                custom_textobjects = {
+                    ['*'] = spec_pair('*', '*', { type = 'greedy' }),
+                    ['_'] = spec_pair('_', '_', { type = 'greedy' }),
+                    ['|'] = spec_pair('|', '|', { type = 'greedy' }),
+                },
+            }
             -- require('mini.pick').setup()
             -- vim.keymap.set('n', '<leader>ff', MiniPick.builtin.files, { desc = 'mini.pick files' })
             -- vim.keymap.set('n', '<leader>fg', MiniPick.builtin.grep, { desc = 'mini.pick grep' })
@@ -355,6 +365,7 @@ return {
                     settings = {
                         -- rust-analyzer language server configuration
                         ['rust-analyzer'] = {
+                            enable = false,
                             rustfmt = {
                                 rangeFormatting = {
                                     enable = true
@@ -425,5 +436,6 @@ return {
                 }
             }
         end
-    }
+    },
+    { 'christoomey/vim-tmux-navigator' }
 }

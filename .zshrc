@@ -2,6 +2,7 @@
 
 path+="$HOME/.local/bin"
 path+="$HOME/go/bin"
+path+="~/.local/share/mise/shims"
 
 # -- PLUGIN & TOOL INITIALIZATION --
 
@@ -26,6 +27,8 @@ PROMPT='%~%f '
 export EDITOR="nvim"
 export SUDO_EDITOR="nvim"
 C="~/dotfiles/.config"
+M="/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/share/man"
+
 alias dg="git --git-dir='$HOME/dotfiles.git' --work-tree='$HOME'" # dotfiles git
 alias ls="eza" # ls
 alias n="nvim" # neovim
@@ -41,6 +44,10 @@ alias mc="n $C/mpv/mpv.conf"
 alias i="kitty icat --scale-up"
 alias c="cargo run"
 alias r="cargo run --release"
+alias mx="mise x --"
+alias d="cargo doc --open --package"
+alias jd="jj describe @- -m"
+alias jn="jj new"
 T="~/Downloads/trash"
 U="/Volumes/USBUSB"
 UB="~/Downloads/USBUSBCOPY"
