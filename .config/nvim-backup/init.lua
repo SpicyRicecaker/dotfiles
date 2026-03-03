@@ -8,8 +8,6 @@ vim.cmd("syntax off")
 -- disable diagnostics
 vim.diagnostic.enable(false)
 
-vim.cmd'autocmd BufLeave,FocusLost * silent! wall'
-
 vim.g.mapleader = ' '
 vim.o.expandtab = true
 vim.o.shiftwidth = 4
@@ -35,48 +33,34 @@ vim.api.nvim_set_keymap('i', '<C-a>', '<Home>', { noremap = true })
 vim.api.nvim_set_keymap('i', '<C-e>', '<End>', { noremap = true })
 vim.api.nvim_set_keymap('i', '<D-v>', '<C-r>+', { noremap = true })
 vim.api.nvim_set_keymap('i', '<C-k>', '<Esc>lC', { noremap = true })
-
-vim.api.nvim_set_keymap('i', '<S-m-o>', '<Esc>O<Esc>O', { noremap = true})
-vim.api.nvim_set_keymap('n', '<S-m-o>', 'O<Esc>O', { noremap = true})
-
---- quit keybinds
-vim.keymap.set('i', '<D-f>', ':<esc>q<cr>', { noremap = true })
-vim.keymap.set('n', '<D-f>', ':q<cr>', { noremap = true })
-vim.keymap.set('i', '<m-f>', ':<esc>q<cr>', { noremap = true })
-vim.keymap.set('n', '<m-f>', ':q<cr>', { noremap = true })
-vim.keymap.set('i', '<S-m-f>', ':<esc>qa<cr>', { noremap = true })
-vim.keymap.set('n', '<S-m-f>', ':qa<cr>', { noremap = true })
----
-
--- vim.api.nvim_set_keymap('n', '\\x1b[13339;9u', '<Esc>:w<cr>a', { noremap = true })
------- save keybinds
+vim.api.nvim_set_keymap('i', '<D-d>', '<Esc>:w<cr>a', { noremap = true })
+vim.api.nvim_set_keymap('n', '\\x1b[13339;9u', '<Esc>:w<cr>a', { noremap = true })
 vim.api.nvim_set_keymap('n', '<D-d>', ':w<cr>', { noremap = true })
 vim.api.nvim_set_keymap('i', '<D-x>', '<Esc>dda', { noremap = true })
-vim.api.nvim_set_keymap('i', '<m-d>', '<Esc>:wa<cr>a', { noremap = true })
-vim.api.nvim_set_keymap('n', '<m-d>', ':wa<cr>', { noremap = true })
--------
 
 -- vim.api.nvim_set_keymap('n', '<m-k>', '-', { noremap = true })
 -- vim.api.nvim_set_keymap('n', '<m-j>', '+', { noremap = true })
--- vim.api.nvim_set_keymap('n', '<C-j>', '<C-w>j', { noremap = true })
--- vim.api.nvim_set_keymap('n', '<C-k>', '<C-w>k', { noremap = true })
--- vim.api.nvim_set_keymap('n', '<C-h>', '<C-w>h', { noremap = true })
--- vim.api.nvim_set_keymap('n', '<C-l>', '<C-w>l', { noremap = true })
---
-vim.api.nvim_set_keymap('n', '<m-S-j>', ':', { noremap = true })
+vim.api.nvim_set_keymap('n', '<C-j>', '<C-w>j', { noremap = true })
+vim.api.nvim_set_keymap('n', '<C-k>', '<C-w>k', { noremap = true })
+vim.api.nvim_set_keymap('n', '<C-h>', '<C-w>h', { noremap = true })
+vim.api.nvim_set_keymap('n', '<C-l>', '<C-w>l', { noremap = true })
 
 vim.api.nvim_set_keymap('n', '<C-m-j>', '<C-w>s<C-w>j', { noremap = true })
 vim.api.nvim_set_keymap('n', '<C-m-k>', '<C-w>s', { noremap = true })
 vim.api.nvim_set_keymap('n', '<C-m-h>', '<C-w>v', { noremap = true })
 vim.api.nvim_set_keymap('n', '<C-m-l>', '<C-w>v<C-w>l', { noremap = true })
---
--- vim.keymap.set('i', '<C-m-j>', function () vim.cmd('wincmd s'); vim.cmd('wincmd j') end, { noremap = true })
--- vim.keymap.set('i', '<C-m-k>', function () vim.cmd('wincmd s') end, { noremap = true })
--- vim.keymap.set('i', '<C-m-h>', function () vim.cmd('wincmd v') end, { noremap = true })
--- vim.keymap.set('i', '<C-m-l>', function () vim.cmd('wincmd v'); vim.cmd('wincmd l') end, { noremap = true })
 
 vim.api.nvim_set_keymap('v', 'y', 'myymY`y', { noremap = true })
 
+vim.keymap.set('i', '<C-j>', function () vim.cmd('wincmd j') end, { noremap = true })
+vim.keymap.set('i', '<C-k>', function () vim.cmd('wincmd k') end, { noremap = true })
+vim.keymap.set('i', '<C-h>', function () vim.cmd('wincmd h') end, { noremap = true })
+vim.keymap.set('i', '<C-l>', function () vim.cmd('wincmd l') end, { noremap = true })
+
+vim.keymap.set('i', '<C-m-j>', function () vim.cmd('wincmd s'); vim.cmd('wincmd j') end, { noremap = true })
+vim.keymap.set('i', '<C-m-k>', function () vim.cmd('wincmd s') end, { noremap = true })
+vim.keymap.set('i', '<C-m-h>', function () vim.cmd('wincmd v') end, { noremap = true })
+vim.keymap.set('i', '<C-m-l>', function () vim.cmd('wincmd v'); vim.cmd('wincmd l') end, { noremap = true })
 
 function save_then_run (f)
     vim.cmd'wa'
@@ -143,6 +127,8 @@ popd]], dir, id_commit, file_name, curloc[1], curloc[2])
 )
 
 
+vim.keymap.set('i', '<D-k>', ':<esc>q<cr>')
+vim.keymap.set('n', '<D-k>', ':q<cr>')
 
 vim.keymap.set('n', '<leader>i', function () vim.opt.wrap = not vim.opt.wrap:get() end, { desc = 'Toggle [w]ord wrap' })
 vim.keymap.set('n', '<leader>j', ':', { desc = "Command Mode" })
@@ -207,4 +193,5 @@ function myprint ()
     local v = vim.cmd'echo &foldlevel'
     print(v)
 end
+
 

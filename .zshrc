@@ -53,6 +53,10 @@ U="/Volumes/USBUSB"
 UB="~/Downloads/USBUSBCOPY"
 alias uc="pushd $U && n . && popd"
 alias us="mv $UB $T && cp -r $U $UB"
+alias o="n oil-ssh://arch/"
+alias tc="pushd $HOME/.config/tmux && n tmux.conf && popd"
+alias ts="tmux source $HOME/.config/tmux/tmux.conf"
+alias t="tmux attach"
 
 # bun completions
 [ -s "/Users/oliver/.bun/_bun" ] && source "/Users/oliver/.bun/_bun"

@@ -90,84 +90,6 @@ return {
     --         vim.cmd"highlight! link MatchParen htmlBold"
     --     end
     -- },
-    -- { "folke/persistence.nvim",
-    --     event = "BufReadPre", 
-    --     lazy = false,
-    --     {
-    --         dir = vim.fn.stdpath("state") .. "/sessions/", -- directory where session files are saved
-    --         -- minimum number of file buffers that need to be open to save
-    --         -- Set to 0 to always save
-    --         need = 1,
-    --         branch = true, -- use git branch to save session
-    --     },
-    --     config = function ()
-    --         -- load the session for the current directory
-    --         vim.keymap.set("n", "<leader>qs", function() require("persistence").load() end)
-    --
-    --         -- select a session to load
-    --         vim.keymap.set("n", "<leader>qS", function() require("persistence").select() end)
-    --
-    --         -- load the last session
-    --         vim.keymap.set("n", "<leader>ql", function() require("persistence").load({ last = true }) end)
-    --
-    --         -- stop Persistence => session won't be saved on exit vim.keymap.set("n", "<leader>qd", function() require("persistence").stop() end) end
-    -- },
-    --
-    {
-        "olimorris/persisted.nvim",
-        event = "BufReadPre", -- Ensure the plugin loads only when a buffer has been loaded
-        lazy = false,
-        opts = {
-            -- Your config goes here ...
-        },
-        config = function ()
-            local persisted = require("persisted")
-            vim.keymap.set('n', '<leader>hp',
-                function ()
-                    vim.cmd("Persisted select")
-                end
-            )
-            vim.keymap.set('n', '<leader>hs',
-                function ()
-                    vim.cmd("Persisted save")
-                end
-            )
-            vim.keymap.set('n', '<leader>hr',
-                function ()
-                    vim.cmd("Persisted load_last")
-                end
-            )
-        end
-    },
-    { "mrjones2014/smart-splits.nvim",
-        lazy = false,
-        config = function ()
-            local s = require('smart-splits')
-            -- recommended mappings
-            -- resizing splits
-            -- these keymaps will also accept a range,
-            -- for example `10<A-h>` will `resize_left` by `(10 * config.default_amount)`
-            -- moving between splits
-            for _, m in ipairs {'i','n'} do
-                -- resize
-                vim.keymap.set(m, '<A-h>', s.resize_left, { noremap = true })
-                vim.keymap.set(m, '<A-j>', s.resize_down, { noremap = true })
-                vim.keymap.set(m, '<A-k>', s.resize_up, { noremap = true })
-                vim.keymap.set(m, '<A-l>', s.resize_right, { noremap = true })
-                -- moving
-                vim.keymap.set(m, '<C-h>', s.move_cursor_left, { noremap = true })
-                vim.keymap.set(m, '<C-j>', s.move_cursor_down, { noremap = true })
-                vim.keymap.set(m, '<C-k>', s.move_cursor_up, { noremap = true })
-                vim.keymap.set(m, '<C-l>', s.move_cursor_right, { noremap = true })
-                vim.keymap.set(m, '<C-\\>', s.move_cursor_previous, { noremap = true })
-                -- swapping
-            end
-            -- swapping buffers between windows
-            vim.keymap.set('n', '<leader><leader>h', s.swap_buf_left)
-            vim.keymap.set('n', '<leader><leader>j', s.swap_buf_down)
-            vim.keymap.set('n', '<leader><leader>k', s.swap_buf_up)
-            vim.keymap.set('n', '<leader><leader>l', s.swap_buf_right)
-        end },
     { "gbprod/yanky.nvim" },
     { "folke/trouble.nvim",
         opts = {}, -- for default options, refer to the configuration section for custom setup.
@@ -241,20 +163,13 @@ return {
             keymaps = {
                 -- Default is ` to cd, but you can remap it if you prefer
                 ["<leader>cd"] = "actions.cd",
-                -- You can also use `tcd` to only change directory for the current TA
+                -- You can also use `tcd` to only change directory for the current TAB
                 ["<leader>td"] = "actions.tcd",
-                ["<C-h>"] = false,
-                ["<C-l>"] = false,
-                ["gr"] = "actions.refresh"
             },
-            view_options = {
-                show_hidden = true
-            }
         },
         dependencies = { "nvim-tree/nvim-web-devicons", "nvim-mini/mini.icons" },
-        config = function (_, opts)
-            -- print(opts:default_file_explorer)
-            require("oil").setup(opts)
+        config = function ()
+            require("oil").setup()
             vim.keymap.set("n", "<leader>e", function () vim.cmd"Oil" end)
         end,
         lazy = false
@@ -406,16 +321,16 @@ return {
                 search_method = 'cover_or_next',
             })
             require('mini.test').setup()
-            -- require('mini.ai').setup()
+            require('mini.ai').setup()
 
-            -- local spec_pair = require('mini.ai').gen_spec.pair
-            -- vim.b.miniai_config = {
-            --     custom_textobjects = {
-            --         ['*'] = spec_pair('*', '*', { type = 'greedy' }),
-            --         ['_'] = spec_pair('_', '_', { type = 'greedy' }),
-            --         ['|'] = spec_pair('|', '|', { type = 'greedy' }),
-            --     },
-            -- }
+            local spec_pair = require('mini.ai').gen_spec.pair
+            vim.b.miniai_config = {
+                custom_textobjects = {
+                    ['*'] = spec_pair('*', '*', { type = 'greedy' }),
+                    ['_'] = spec_pair('_', '_', { type = 'greedy' }),
+                    ['|'] = spec_pair('|', '|', { type = 'greedy' }),
+                },
+            }
             -- require('mini.pick').setup()
             -- vim.keymap.set('n', '<leader>ff', MiniPick.builtin.files, { desc = 'mini.pick files' })
             -- vim.keymap.set('n', '<leader>fg', MiniPick.builtin.grep, { desc = 'mini.pick grep' })
