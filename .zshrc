@@ -3,6 +3,7 @@
 path+="$HOME/.local/bin"
 path+="$HOME/go/bin"
 path+="~/.local/share/mise/shims"
+path+="$HOME/git/kakoune/src"
 
 # -- PLUGIN & TOOL INITIALIZATION --
 
@@ -24,8 +25,8 @@ setopt SHARE_HISTORY
 PROMPT='%~%f '
 
 # -- MODS --
-export EDITOR="nvim"
-export SUDO_EDITOR="nvim"
+# export EDITOR="nvim"
+# export SUDO_EDITOR="nvim"
 C="~/dotfiles/.config"
 M="/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/share/man"
 
@@ -65,5 +66,18 @@ alias t="tmux attach"
 export BUN_INSTALL="$HOME/.bun"
 export PATH="$BUN_INSTALL/bin:$PATH"
 # export PAGER="nvim +Man! -c 'setlocal scrolloff=999' -c 'norm M'"
-export PAGER="nvim +Man!"
-export MAN_KEEP_FORMATTING=1
+# export PAGER="nvim +Man!"
+# export MAN_KEEP_FORMATTING=1
+
+export PATH=$PATH:/Users/oliver/.spicetify
+
+# >>> juliaup initialize >>>
+
+# !! Contents within this block are managed by juliaup !!
+
+path=('/Users/oliver/.juliaup/bin' $path)
+export PATH
+# Tab completion for juliaup and julia channel selection
+[ -f "/Users/oliver/.julia/juliaup/completions/zsh.zsh" ] && source "/Users/oliver/.julia/juliaup/completions/zsh.zsh"
+
+# <<< juliaup initialize <<<

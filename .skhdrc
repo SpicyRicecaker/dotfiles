@@ -148,7 +148,7 @@
 # alt - p : yabai -m window --toggle sticky --toggle pip
 
 # toggle window sticky
-alt - s : yabai -m window --toggle sticky
+shift + alt - s : yabai -m window --toggle sticky
 
 # alt + shift - w : yabai -m window --focus stack.prev
 # alt + shift - s : yabai -m window --focus stack.next
@@ -171,13 +171,13 @@ alt - r : yabai --restart-service
 
 # Focus bindings
 # focus window west
-alt - h : yabai -m window --focus west
+# alt - h : yabai -m window --focus west
 # focus window south
-alt - j : yabai -m window --focus south
+# alt - j : yabai -m window --focus south
 # focus window north
-alt - k : yabai -m window --focus north
+# alt - k : yabai -m window --focus north
 # focus window east
-alt - l : yabai -m window --focus east
+# alt - l : yabai -m window --focus east
 
 # Move bindings
 # alt + shift - h : yabai -m window --warp west
@@ -247,9 +247,12 @@ alt - tab : yabai -m space --focus recent
 
 # Next and previous workspace
 # focus previous space
-alt - 0x21 : yabai -m space --focus prev
+# alt - 0x21 : yabai -m space --focus prev
+alt - h : yabai -m space --focus prev
 # focus next space
-alt - 0x1E : yabai -m space --focus next
+# alt - 0x1E : yabai -m space --focus next
+alt - i : yabai -m space --focus next
+alt - l : yabai -m space --focus next
 
 # Move workspace to next or prev
 alt + shift - 0x21 : yabai -m space --move prev

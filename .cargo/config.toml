@@ -6,8 +6,8 @@
 #  linker = "clang"
 #  rustflags = ["-Clink-arg=--ld-path=wild"]
 
-[build]
-rustflags = "-Zthreads=8"
+# [build]
+# rustflags = "-Zthreads=8"
 
 # [profile.dev]
 # codegen-backend = "cranelift"
