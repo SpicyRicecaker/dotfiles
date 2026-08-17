@@ -23,6 +23,7 @@ setopt SHARE_HISTORY
 
 # Simple Prompt (Clean and minimalist)
 PROMPT='%~%f '
+bindkey -v
 
 # -- MODS --
 # export EDITOR="nvim"
@@ -33,7 +34,9 @@ M="/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Develope
 alias dg="git --git-dir='$HOME/dotfiles.git' --work-tree='$HOME'" # dotfiles git
 alias ls="eza" # ls
 alias n="nvim" # neovim
+alias nt="nvim -u $HOME/.config/nvim-backup/init.lua" # edit neovim
 alias nc="pushd $C/nvim && n ./lua/plugins.lua && popd" # edit neovim
+alias ncc="pushd $C/nvim-backup && n ./lua/plugins.lua && popd" # edit neovim
 alias yc="n ~/.yabairc" # edit yabai config
 alias sc="n ~/.skhdrc" # edit skhdrc config
 alias z="n ~/.zshrc" # edit zsh config
